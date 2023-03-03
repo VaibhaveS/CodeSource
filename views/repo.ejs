@@ -1,0 +1,50 @@
+<html>
+<% // create a nested object where each path is a key, and the value is an array of files that belong to that path
+  const nestedFiles = {};
+  Object.keys(files).forEach(function(path) {
+    const segments = path.split('/');
+    let currentPath = '';
+    for (let i = 0; i < segments.length - 1; i++) {
+      currentPath += segments[i];
+      if (i === segments.length - 2) {
+        if (currentPath) {
+          if (!nestedFiles[currentPath]) {
+            nestedFiles[currentPath] = [];
+          }
+          nestedFiles[currentPath].push(segments[segments.length - 1]);
+        } else {
+          if (!nestedFiles[path]) {
+            nestedFiles[path] = [];
+          }
+          nestedFiles[path].push(segments[segments.length - 1]);
+        }
+      } else {
+        if (!currentPath) {
+          currentPath = segments[i] + '/';
+        } else {
+          currentPath += '/';
+        }
+        if (!nestedFiles[currentPath]) {
+          nestedFiles[currentPath] = {};
+        }
+      }
+    }
+  });
+%>
+<% // iterate over the nested object to generate the HTML output
+  function generateNestedList(nestedFiles) {
+    let output = '<ul>';
+    Object.keys(nestedFiles).forEach(function(key) {
+      if (Array.isArray(nestedFiles[key])) {
+        output += '<li><i class="fa fa-file"></i>' + nestedFiles[key][0] + '</li>';
+      } else {
+        output += '<li class="collapsible"><i class="fa fa-folder"></i>' + key + generateNestedList(nestedFiles[key]) + '</li>';
+      }
+    });
+    output += '</ul>';
+    return output;
+  }
+%>
+<%- generateNestedList(nestedFiles) %>
+
+</html>

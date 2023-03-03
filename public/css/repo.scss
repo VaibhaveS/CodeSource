@@ -1,0 +1,22 @@
+ul {
+    list-style: none;
+    padding-left: 1rem;
+  }
+  
+  li {
+    margin: 0.5rem 0;
+  }
+  
+  .collapsible i {
+    cursor: pointer;
+  }
+  
+  .collapsible > ul {
+    display: none;
+    margin-left: 1rem;
+  }
+  
+  .collapsible.open > ul {
+    display: block;
+  }
+  
