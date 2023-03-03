@@ -1,5 +1,83 @@
-<% if (!user) { %>
-	<h2>Welcome! Please log in.</h2>
-<% } else { %>
-	<h2>Hello, <%= user.displayName %>.</h2>
-<% } %>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeSource</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+	<link href="/css/homepage.css" rel="stylesheet">
+</head>
+
+<div class="container">
+
+        <nav>
+
+            <h1>CodeSource</h1>
+
+
+            <div class="navbar">
+                <ul>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Explore</a></li>
+                    <li><a href="#">Contact</a></li>
+					<% if (user) { %>
+						<li><a href="myAccount">My account</a></li>
+                        <li>
+                            <div class="add-repo-container">
+                              <button type="button" class="add-repo-btn" onmouseover="showForm()">Add repository</button>
+                              <div class="add-repo-form">
+                                <form action="/validateCollaborator" id="add-repo-form" method="post">
+                                  <input type="text" placeholder="Repository Name" id = "repoLink" name="repoLink">
+                                  <button type="submit">Submit</button>
+                                </form>
+                              </div>
+                            </div>
+                        </li>    
+					<% } %>
+                </ul>
+            </div>
+
+            <% if (!user) { %>
+				<button type="button" class="connection" onclick="location.href='/auth/github'">Login with Github</button>
+			<% } else { %>
+				<h2>Hello, <%= user.displayName %></h2>
+			<% } %>
+            
+        </nav>
+
+
+        <section class="section-hero">
+
+            <div class="hero-gauche">
+
+                <h1>Codebase <strong>clarity</strong> <br> made easy!</h1>
+
+                <p>We are simplifying open-source collaboration, one explanation at a time. <br><br> Join our community today!</p>
+
+            </div>
+
+
+            <div class="hero-droite">
+                <img src="/images/banner.png" alt="rocket maaan">
+            </div>
+
+        </section>
+
+    </div>
+
+    <script>
+        function showForm() {
+            const form = document.getElementById("add-repo-form");
+            form.style.display = "block";
+        }
+        document.addEventListener("click", function(event) {
+            const form = document.getElementById("add-repo-form");
+            const button = document.querySelector(".add-repo-btn");
+
+            // if the click event is outside of the form and button, close the form
+            if (!form.contains(event.target) && !button.contains(event.target)) {
+                form.style.display = "none";
+            }
+        });
+    </script>
+

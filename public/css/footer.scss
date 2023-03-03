@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+.bw-footer {
+  height: 180px;
+  width: 100%;
+  padding-bottom: 50px;
+  padding-top: 10%;
+}
+.bw-footer .links {
+  color: #000;
+  font-family: "G", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 35px;
+  font-weight: bold;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  text-align: left;
+}
+.bw-footer .links-small {
+  color: #000;
+  font-family: "Raleway", sans-serif;
+  font-size: 35px;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap !important;
+}
+.bw-footer a {
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+}
+.bw-footer a::after {
+  background-color: #d9d9d9;
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 0;
+  margin-bottom: -15px;
+  position: absolute;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+  width: 100%;
+}
+.bw-footer a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+  color: white;
+  text-decoration:none;
+}
+
+.bw-footer .links a:hover {
+    color: #000000;
+    opacity: 0.6;
+    text-decoration: none;
+}
+
+.bw-footer .links-small a:hover {
+    color: #000000;
+    opacity: 0.6;
+    text-decoration: none;
+}

@@ -1,0 +1,43 @@
+/* Style the links */
+a {
+	color: #333; /* Default link color */
+	text-decoration: none; /* Remove underline */
+	padding: 10px 20px; /* Add padding */
+	transition: background-color 0.2s ease-in-out; /* Add a transition effect */
+  }
+  
+  /* Style the Home link */
+  a[href="/"] {
+	background-color: #4CAF50; /* Green */
+	color: white;
+  }
+  
+  /* Style the Login link */
+  a[href="/login"] {
+	background-color: #f44336; /* Red */
+	color: white;
+  }
+  
+  /* Style the Account link */
+  a[href="/account"] {
+	background-color: #FFA500; /* Orange */
+	color: white;
+  }
+  
+  /* Style the Logout link */
+  a[href="/logout"] {
+	background-color: #000080; /* Dark Blue */
+	color: white;
+  }
+  
+  /* Style the Add Repository link */
+  a[href="/add-repo"] {
+	background-color: #FFC0CB; /* Pink */
+	color: white;
+  }
+  
+  /* Change the link styles on hover */
+  a:hover {
+	background-color: #000000; /* Light gray */
+  }
+  

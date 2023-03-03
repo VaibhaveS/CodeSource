@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var GitHubStrategy = require('passport-github2').Strategy;
 var partials = require('express-partials');
+var path = require('path');
 var https = require('https');
 
 
@@ -63,6 +64,8 @@ app.use(partials());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
@@ -72,6 +75,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function(req, res){
+  console.log(req.user);
   res.render('index', { user: req.user });
 });
 
@@ -86,6 +90,11 @@ app.get('/login', function(req, res){
 app.get('/add-repo', function(req, res){
 	res.render('addRepo', { user: req.user });
 });
+
+app.get('/myAccount', function(req, res){
+	res.render('account', { user: req.user });
+});
+
 
 const httpGet = url => {
 	//console.log(url);
@@ -102,7 +111,7 @@ const httpGet = url => {
 
   //TODO COMPLETE DIRECTORY SYNC
   app.post('/validateCollaborator', async function(req, res){
-	//console.log('/repos/'+ req.user.username + '/' + req.body.repoLink);
+	console.log('/repos/'+ req.user.username + '/' + req.body.repoLink);
 	const options = {
 		hostname: 'api.github.com', 
 		path: '/repos/'+ 'vaibhaveS' + '/' + req.body.repoLink,
