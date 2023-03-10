@@ -10,11 +10,13 @@ var partials = require('express-partials');
 var path = require('path');
 var https = require('https');
 const { dir } = require('console');
-
+const monogConnect = require('./util/database').mongoConnect;
 
 var GITHUB_CLIENT_ID = "816db5d84caf9ddd12b5";
 var GITHUB_CLIENT_SECRET = "66d7f9aa5de76f921147f9878d3dfe6b0e903b15";
 
+const User = require('./models/user');
+const Event = require("./models/event");
 
 
 // Passport session setup.
@@ -37,6 +39,10 @@ passport.deserializeUser(function(obj, done) {
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken, refreshToken, and GitHub
 //   profile), and invoke a callback with a user object.
+
+
+
+
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
@@ -45,11 +51,36 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      
-      // To keep the example simple, the user's GitHub profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the GitHub account with a user record in your database,
-      // and return that user instead.
+    	// To keep the example simple, the user's GitHub profile is returned to
+        // represent the logged-in user.  In a typical application, you would want
+        // to associate the GitHub account with a user record in your database,
+        // and return that user instead.
+	    // const user = new User(profile.id, profile);
+	    // user.save().then(result => {
+		// 	console.log("saved user");
+	  	// })
+		console.log("Heello");
+		console.log(profile.id);
+		
+
+		User.findById({ userId: profile.id }).then(existingUser => {
+			if (existingUser) {
+				console.log('User already exists in the database');
+			} else {
+				console.log("creating new user");
+				const user = new User(profile.id, profile);
+				user.save().then(result => {
+					console.log('New user saved to the database');
+				}).catch(err => {
+					console.error(err);
+				});
+			}}).catch(err => {
+			console.error(err);
+		});
+
+
+
+	  //console.log("user pofile ", profile);
       return done(null, profile);
     });
   }
@@ -101,6 +132,52 @@ app.get('/myAccount', function(req, res){
 	res.render('account', { user: req.user });
 });
 
+app.get('/events', function(req, res) {
+	Event.findAll().then(events => {
+		const eventsObject = events.map(event => event.details);
+		res.render('events', { user: req.user, events: eventsObject });
+	})
+});
+
+app.get('/update-events', function(req, res) {
+	Event.findAll().then(events => {
+		const eventsObject = events.map(event => event.details);
+		var selectedType = req.query.type;
+		var filteredEvents = eventsObject.filter(function(event) {
+			return selectedType == undefined || selectedType.toLowerCase() === 'all' || event.location.toLowerCase() === selectedType.toLowerCase();
+		});
+		console.log(filteredEvents, selectedType);
+		res.render('updated_events', { user: req.user, events: filteredEvents });
+	})
+});
+
+
+
+app.post('/add-events', function(req, res) {
+	console.log("hai");
+    const { title, date, location, description } = req.body;
+    const event = new Event({ title, date, location, description });
+    event.save().then(result => {
+        console.log("added this event", result);
+        res.redirect('/events');
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
+
+app.post('/events/add-events', function(req, res) {
+	console.log("hai 2");
+    const { title, date, location, description } = req.body;
+    const event = new Event({ title, date, location, description });
+    event.save().then(result => {
+        console.log("added this event", result);
+        res.redirect('/events');
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+});
 
 const httpGet = url => {
 	//console.log(url);
@@ -265,7 +342,11 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-app.listen(3000);
+
+monogConnect(() => {
+	app.listen(3000);
+});
+
 
 
 // Simple route middleware to ensure user is authenticated.

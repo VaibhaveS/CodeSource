@@ -1,0 +1,229 @@
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="/css/events.scss" rel="stylesheet">
+
+</head>
+
+<body>
+    
+
+    <div id="cf-in-store-events">
+        <nav>
+
+            <h1>CodeSource</h1>
+    
+    
+            <div class="navbar">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Explore</a></li>
+                    <!-- <li><a href="#">Contact</a></li> -->
+                    <% if (user) { %>
+                        <li><a href="myAccount">My account</a></li>
+                        <div class="add-repo-container">
+                            <button type="button" class="add-repo-btn" onmouseover="showForm()">Add repository</button>
+                            <div class="add-repo-form">
+                            <form action="/validateCollaborator" id="add-repo-form" method="post">
+                                <input type="text" placeholder="Repository Name" id = "repoLink" name="repoLink">
+                                <button type="submit">Submit</button>
+                            </form>
+                            </div>
+                        </div>
+                    <% } %>
+                </ul>
+            </div>
+    
+            <% if (!user) { %>
+                <button type="button" class="connection" onclick="location.href='/auth/github'">Login with Github</button>
+            <% } else { %>
+                <h2>Hello, <%= user.displayName %></h2>
+            <% } %>
+            
+        </nav>
+        <section id="cf-in-store-events-hero">
+          <div class="container-fluid cf-store-events-hero-wrap">
+            <div class="row">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="cf-hero-message">
+                       <h1>
+                         <span>Participate in exciting events that will help you develop your skills and contribute to open-source projects!</span>
+                        </h1>
+                    </div><!--cf-hero-message ends-->
+                    </div><!--col-md-12 ends-->
+                  </div><!--bes-row ends-->
+                  <div class="filters">
+                    <!-- <button onclick="openModal()" id = "fourth" class="fourth">Add Event</button> -->
+                    <button type="button" class="connection" onclick="openModal()">Add event</button>
+                    <label>&nbsp;&nbsp;Filter by Event Type:</label>
+                    <select id="event-type-filter" class = "connection">
+                        <option value="all" class="value">All</option>
+                        <option value="virtual" class="value">Virtual</option>
+                        <option value="onsite" class="value">On-site</option>
+                    </select>
+                    <label>&nbsp;&nbsp;Search by Name:</label>
+                    <input type="text" id="event-search" placeholder="  Enter event name..." class="connection">
+                </div>
+                </div><!--container ends-->
+              </div><!--row ends-->
+            </div><!--container-fluid ends-->
+        </section>
+
+        <section id="events-list">
+            <div class="event-container" id = "event-container">
+                <% for (var i = 0; i < events.length; i += 3) { %>
+                  <div class="row">
+                    <% for (var j = i; j < i + 3 && j < events.length; j++) { %>
+                      <div class="event-col">
+                        <div class="event-card">
+                          <h3><%= events[j].title %></h3>
+                          <p>Date: <%= events[j].date %></p>
+                          <p>Location: <%= events[j].location %></p>
+                          <p>Description: <%= events[j].description %></p>
+                        </div>
+                      </div>
+                    <% } %>
+                  </div>
+                <% } %>
+            </div>
+        </section>
+
+          
+        
+        </div>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close" onclick="closeModal()">&times;</span>
+              <h2 style="text-align: center;">Add New Event</h2>
+              <form action="/add-events" method="post">
+                <label for="title">Title:</label>
+                <input class="text" type="text" id="title" name="title" required><br><br>
+                <label for="date">Date:</label>
+                <input class="text" type="date" id="date" name="date" required><br><br>
+                <label for="location">Location:</label>
+                <input class="text" type="text" id="location" name="location" required><br><br>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea><br><br>
+                <button type="submit" class="connection" style="margin: auto;" >Add Event</button>
+              </form>
+            </div>
+          </div>
+        </body>
+      
+
+    
+
+<script>
+// Filter events by event type
+
+
+  // Filter events by event type
+  // Filter events by event type
+  
+function updateEvents(selectedType) {
+  fetch(`/update-events?type=${selectedType}`)
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById("event-container").innerHTML = html;
+      localStorage.setItem('selectedType', selectedType);
+    })
+    .catch(error => console.error(error));
+}
+
+
+
+
+
+
+document.getElementById('event-type-filter').addEventListener('change', function() {
+    var selectedType = this.value.toLowerCase();
+    updateEvents(selectedType);
+});
+
+// Search events by name
+
+// Get the modal element
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+function openModal() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+function closeModal() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+// Get the modal element
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+function openModal() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+function closeModal() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// var form = document.querySelector('form');
+// form.addEventListener('submit', function(event) {
+//   event.preventDefault(); // Prevent the form from submitting
+
+//   // You can write your code to handle form submission here.
+//   // For example, you can send the form data to the server using an AJAX request.
+//   fetch('/add-events', {
+//     method: 'POST',
+//     body: formData
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//     console.log(data);
+//   })
+//   .catch(error => {
+//     console.error(error);
+//   });
+//   // Once the form is submitted, you can close the popup:
+//   var popup = document.getElementById('myModal');
+//   popup.style.display = 'none';
+// });
+
+
+
+</script>
+
+</html>

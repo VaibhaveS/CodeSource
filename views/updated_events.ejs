@@ -1,0 +1,14 @@
+<% for (var i = 0; i < events.length; i += 3) { %>
+    <div class="row">
+    <% for (var j = i; j < i + 3 && j < events.length; j++) { %>
+        <div class="event-col">
+        <div class="event-card">
+            <h3><%= events[j].title %></h3>
+            <p>Date: <%= events[j].date %></p>
+            <p>Location: <%= events[j].location %></p>
+            <p>Description: <%= events[j].description %></p>
+        </div>
+        </div>
+    <% } %>
+    </div>
+<% } %>

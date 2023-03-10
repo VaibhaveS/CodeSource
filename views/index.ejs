@@ -10,40 +10,10 @@
 
 <div class="container">
 
-        <nav>
-
-            <h1>CodeSource</h1>
 
 
-            <div class="navbar">
-                <ul>
-                    <li><a href="#">Events</a></li>
-                    <li><a href="#">Explore</a></li>
-                    <li><a href="#">Contact</a></li>
-					<% if (user) { %>
-						<li><a href="myAccount">My account</a></li>
-                        <li>
-                            <div class="add-repo-container">
-                              <button type="button" class="add-repo-btn" onmouseover="showForm()">Add repository</button>
-                              <div class="add-repo-form">
-                                <form action="/validateCollaborator" id="add-repo-form" method="post">
-                                  <input type="text" placeholder="Repository Name" id = "repoLink" name="repoLink">
-                                  <button type="submit">Submit</button>
-                                </form>
-                              </div>
-                            </div>
-                        </li>    
-					<% } %>
-                </ul>
-            </div>
 
-            <% if (!user) { %>
-				<button type="button" class="connection" onclick="location.href='/auth/github'">Login with Github</button>
-			<% } else { %>
-				<h2>Hello, <%= user.displayName %></h2>
-			<% } %>
-            
-        </nav>
+         <%- include('header', {user: user}); %>
 
 
         <section class="section-hero">
@@ -62,8 +32,13 @@
             </div>
 
         </section>
+    
+        <!-- FOOTER -->
+
 
     </div>
+
+        
 
     <script>
         function showForm() {
