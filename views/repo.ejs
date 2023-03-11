@@ -4,20 +4,13 @@
   Object.keys(files).forEach(function(path) {
     const segments = path.split('/');
     let currentPath = '';
-    for (let i = 0; i < segments.length - 1; i++) {
+    for (let i = 0; i < segments.length; i++) {
       currentPath += segments[i];
-      if (i === segments.length - 2) {
-        if (currentPath) {
-          if (!nestedFiles[currentPath]) {
-            nestedFiles[currentPath] = [];
-          }
-          nestedFiles[currentPath].push(segments[segments.length - 1]);
-        } else {
-          if (!nestedFiles[path]) {
-            nestedFiles[path] = [];
-          }
-          nestedFiles[path].push(segments[segments.length - 1]);
+      if (i === segments.length - 1) {
+        if (!nestedFiles[currentPath]) {
+          nestedFiles[currentPath] = [];
         }
+        nestedFiles[currentPath].push(segments[segments.length - 1]);
       } else {
         if (!currentPath) {
           currentPath = segments[i] + '/';
