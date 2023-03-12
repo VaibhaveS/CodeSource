@@ -7,13 +7,18 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var GitHubStrategy = require('passport-github2').Strategy;
 var partials = require('express-partials');
+const fs = require('fs');
+const dotenv = require('dotenv');
 var path = require('path');
 var https = require('https');
 const { dir } = require('console');
 const monogConnect = require('./util/database').mongoConnect;
 
-var GITHUB_CLIENT_ID = "816db5d84caf9ddd12b5";
-var GITHUB_CLIENT_SECRET = "66d7f9aa5de76f921147f9878d3dfe6b0e903b15";
+dotenv.config();
+
+
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 const User = require('./models/user');
 const Event = require("./models/event");
@@ -193,10 +198,10 @@ const httpGet = url => {
 
 
 
-  async function parseTree(repoName, sha_url) {
+  async function parseTree(repoName, sha_url, userName) {
 	const options = {
 	  hostname: 'api.github.com',
-	  path: '/repos/vaibhaveS/' + repoName + '/git/trees/' + sha_url,
+	  path: '/repos/' + userName + '/' + repoName + '/git/trees/' + sha_url,
 	  headers: {
 		'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
 	  }
@@ -228,7 +233,7 @@ const httpGet = url => {
 	console.log('/repos/'+ req.user.username + '/' + req.body.repoLink);
 	const options = {
 		hostname: 'api.github.com', 
-		path: '/repos/'+ 'vaibhaveS' + '/' + req.body.repoLink,
+		path: '/repos/'+ req.user.username + '/' + req.body.repoLink,
 		headers : {
             'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
 		}
@@ -245,7 +250,7 @@ const httpGet = url => {
 
 		const optionsTwo = {
 			hostname: 'api.github.com', 
-			path: '/repos/'+ 'vaibhaveS' + '/' + req.body.repoLink + '/commits',
+			path: '/repos/'+ req.user.username + '/' + req.body.repoLink + '/commits',
 			headers : {
             	'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
 			}
@@ -263,7 +268,7 @@ const httpGet = url => {
 		// const bodyThree = JSON.parse(await httpGet(optionsThree));
 		// console.log(bodyThree);
 
-		//const dirTree = await parseTree(req.body.repoLink, url);
+		//const dirTree = await parseTree(req.body.repoLink, url, userName);
 		const dirTree = 
 			{
 			  '.gitignore': '549e00a2a96fa9d7c5dbc9859664a78d980158c2',
@@ -306,10 +311,27 @@ const httpGet = url => {
 			  'src/test/resources/features/todoGet.feature': '12aab580d90e5aa3743ce89ff990e96c06ec9698',
 			  'src/test/resources/features/todoPut.feature': '3761615e2387bfbb39e3d30bb193c8b670dfeb66'
 			}
-		console.log("directory structure")
-		console.log(dirTree);
-
-		res.render('repo', { files: dirTree });
+		//console.log("directory structure")
+		//console.log(dirTree);
+		let dirTreeNested = {};
+		for (const filePath in dirTree) {
+			const pathArray = filePath.split('/');
+			let currentDict = dirTreeNested;
+			//last one is a file name
+			for (let i = 0; i < pathArray.length-1; i++) {
+				const pathSegment = pathArray[i];
+				if (!currentDict.hasOwnProperty(pathSegment)) {
+				  currentDict[pathSegment] = {};
+				}
+				currentDict = currentDict[pathSegment];
+			}
+			if (!currentDict.hasOwnProperty('files')) {
+				currentDict.files = [];
+			}
+			currentDict.files.push(pathArray[pathArray.length-1]);
+		}
+		console.log("-> ", JSON.stringify(dirTreeNested));
+		res.render('repo', { files: dirTreeNested });
 	}
 });
 

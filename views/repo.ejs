@@ -1,50 +1,68 @@
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeSource</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+<link href="/css/repo.scss" rel="stylesheet">
+</head>
+
+
 <html>
-<% // create a nested object where each path is a key, and the value is an array of files that belong to that path
-  const nestedFiles = {};
-  Object.keys(files).forEach(function(path) {
-    const segments = path.split('/');
-    let currentPath = '';
-    for (let i = 0; i < segments.length - 1; i++) {
-      currentPath += segments[i];
-      if (i === segments.length - 2) {
-        if (currentPath) {
-          if (!nestedFiles[currentPath]) {
-            nestedFiles[currentPath] = [];
-          }
-          nestedFiles[currentPath].push(segments[segments.length - 1]);
-        } else {
-          if (!nestedFiles[path]) {
-            nestedFiles[path] = [];
-          }
-          nestedFiles[path].push(segments[segments.length - 1]);
+
+<% // iterate over the nested object to generate the HTML output
+  function generateNestedList(directory) {
+    for (const key in directory) {
+      const value = directory[key];
+      if (key === 'files') {
+        // Render the file list
+        for (let i = 0; i < value.length; i++) {
+          const file = value[i];
+          %><li><%= file %></li><%
         }
       } else {
-        if (!currentPath) {
-          currentPath = segments[i] + '/';
-        } else {
-          currentPath += '/';
-        }
-        if (!nestedFiles[currentPath]) {
-          nestedFiles[currentPath] = {};
-        }
+        // Render the directory
+        %><li><%= key %><ul><%
+          generateNestedList(value);
+        %></ul></li><%
       }
     }
-  });
-%>
-<% // iterate over the nested object to generate the HTML output
-  function generateNestedList(nestedFiles) {
-    let output = '<ul>';
-    Object.keys(nestedFiles).forEach(function(key) {
-      if (Array.isArray(nestedFiles[key])) {
-        output += '<li><i class="fa fa-file"></i>' + nestedFiles[key][0] + '</li>';
-      } else {
-        output += '<li class="collapsible"><i class="fa fa-folder"></i>' + key + generateNestedList(nestedFiles[key]) + '</li>';
-      }
-    });
-    output += '</ul>';
-    return output;
   }
 %>
-<%- generateNestedList(nestedFiles) %>
+
+
+  <div class="box">
+    <ul class="directory-list">
+<%- generateNestedList(files) %>
+</ul>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>	// get all folders in our .directory-list
+	var allFolders = $(".directory-list li > ul");
+  console.log(allFolders);
+	allFolders.each(function() {
+
+	  // add the folder class to the parent <li>
+	  var folderAndName = $(this).parent();
+	  folderAndName.addClass("folder");
+
+	  // backup this inner <ul>
+	  var backupOfThisFolder = $(this);
+	  // then delete it
+	  $(this).remove();
+	  // add an <a> tag to whats left ie. the folder name
+	  folderAndName.wrapInner("<a href='#' />");
+	  // then put the inner <ul> back
+	  folderAndName.append(backupOfThisFolder);
+
+	  // now add a slideToggle to the <a> we just added
+	  folderAndName.find("a").click(function(e) {
+	    $(this).siblings("ul").slideToggle("slow");
+	    e.preventDefault();
+	  });
+
+	});
+  </script>
 
 </html>
