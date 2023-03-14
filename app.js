@@ -7,13 +7,18 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var GitHubStrategy = require('passport-github2').Strategy;
 var partials = require('express-partials');
+const fs = require('fs');
+const dotenv = require('dotenv');
 var path = require('path');
 var https = require('https');
 const { dir } = require('console');
 const monogConnect = require('./util/database').mongoConnect;
 
-var GITHUB_CLIENT_ID = "f47426e3d77c3da28b4e";
-var GITHUB_CLIENT_SECRET = "5eff3f10b5d0fa4451151e4f8e7e8c729891fcff";
+dotenv.config();
+
+
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 const User = require('./models/user');
 const Event = require("./models/event");
@@ -193,17 +198,17 @@ const httpGet = url => {
 
 
 
-  async function parseTree(repoName, sha_url) {
+  async function parseTree(repoName, sha_url, userName) {
 	const options = {
 	  hostname: 'api.github.com',
-	  path: '/repos/akash-1536/' + repoName + '/git/trees/' + sha_url,
+	  path: '/repos/' + userName + '/' + repoName + '/git/trees/' + sha_url,
 	  headers: {
 		'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
 	  }
 	};
 	const response = JSON.parse(await httpGet(options));
-	//console.log(repoName);
-	//console.log(response);
+	// console.log(repoName);
+	// console.log(response);
 	const files = {};
   
 	for (let i = 0; i < response.tree.length; i++) {
@@ -228,7 +233,7 @@ const httpGet = url => {
 	console.log('/repos/'+ req.user.username + '/' + req.body.repoLink);
 	const options = {
 		hostname: 'api.github.com', 
-		path: '/repos/'+ 'akash-1536' + '/' + req.body.repoLink,
+		path: '/repos/'+ req.user.username + '/' + req.body.repoLink,
 		headers : {
             'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
 		}
@@ -245,7 +250,7 @@ const httpGet = url => {
 
 		const optionsTwo = {
 			hostname: 'api.github.com', 
-			path: '/repos/'+ 'akash-1536' + '/' + req.body.repoLink + '/commits',
+			path: '/repos/'+ req.user.username + '/' + req.body.repoLink + '/commits',
 			headers : {
             	'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
 			}
@@ -255,45 +260,15 @@ const httpGet = url => {
 		
 		// const optionsThree = {
 		// 	hostname: 'api.github.com', 
-		// 	path: '/repos/'+ 'akash-1536' + '/' + req.body.repoLink + '/git/trees/' + url,
+		// 	path: '/repos/'+ 'vaibhaveS' + '/' + req.body.repoLink + '/git/trees/' + url,
 		// 	headers : {
         //     	'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36'
 		// 	}
 		// }
 		// const bodyThree = JSON.parse(await httpGet(optionsThree));
-		//console.log(bodyThree);
+		// console.log(bodyThree);
 
-		//const dirTree = await parseTree(req.body.repoLink, url);
-		// const dirTree = {
-		// 	'.eslintrc.json': 'bffb357a7122523ec94045523758c4b825b448ef',
-  // '.gitignore': '299738afcc9356ef4df51f3241cd3a879a4184df',
-  // 'README.md': 'edcae1ec9174d796fca5a640e642bb1d8d4affb7',
-  // 'config.js': '1c54267f9fdf27c2bcd6496a1ca38cd1cfbf1196',
-  // 'contracts/NFT.sol': '88f8076e14d20fd108983f4dd3a2735adf317710',
-  // 'contracts/NFTMarket.sol': '28eef6f42fa01f878212b968cf17dff5f80bd912',
-  // 'hardhat.config.js': '0b33a2b5cdcddd6af0e311d888362003fd63a55c',
-  // 'next.config.js': '3e623abec1095592a29d602e43bc311c8f1eb379',
-  // 'package-lock.json': 'fd04a97a05bebe386876f093ec0bf5c5beffce78',
-  // 'package.json': 'e02202e880754462007bb27629244a119491b0d8',
-  // 'pages/_app.js': 'a34df0e709711abbbcb19dee2e920372f4c1a939',
-  // 'pages/api/hello.js': 'df63de88fa67cb006e692cc789caea580ba3697e',
-  // 'pages/index.js': '52df765509d52c73d4657cadbde2821579872fb0',
-  // 'pages/list-property.js': 'a3480615390565ca3e640f2f8af9bb43a6668046',
-  // 'pages/my-property.js': 'b88d79c78cc29c8db6254ffe20ce206c21a57258',
-  // 'pages/your-dashboard.js': '147908bd6cf22487ecc54a4f40c9e5f23d747c08',
-  // 'postcss.config.js': '33ad091d26d8a9dc95ebdf616e217d985ec215b8',
-  // 'public/favicon.ico': '718d6fea4835ec2d246af9800eddb7ffb276240c',
-  // 'public/vercel.svg': 'fbf0e25a651c28931b2fe8afa2947e124eebc74f',
-  // 'scripts/deploy.js': '80f069b557a2328f5843aef556592140463ac479',
-  // 'styles/Home.module.css': '32a57d52f34c482d27411bec118da82ec7ff3edc',
-  // 'styles/globals.css': '7a740f0186709dc05d30b8a2b00ad9124e36403d',
-  // 'tailwind.config.js': 'bd6495961cb47601ce5880bfbb522fd032fc89a1',
-  // 'test/sample-test.js': 'efda8a03919e97d9f44d63b273063204e4ec435f',
-  // 'utils/NFTProperty.json': '45437a2b8180d72377dcfe1afbb45e4b26301e00',
-  // 'utils/NFTPropertyMarket.json': '047db14e7dd4eb0ceee71586e60bf088d685fb11',
-  // 'yarn.lock': '655ba2aa06052c42468f19944bb26a75d90a56ec'
-		// }
-
+		//const dirTree = await parseTree(req.body.repoLink, url, userName);
 		const dirTree = 
 			{
 			  '.gitignore': '549e00a2a96fa9d7c5dbc9859664a78d980158c2',
@@ -336,10 +311,27 @@ const httpGet = url => {
 			  'src/test/resources/features/todoGet.feature': '12aab580d90e5aa3743ce89ff990e96c06ec9698',
 			  'src/test/resources/features/todoPut.feature': '3761615e2387bfbb39e3d30bb193c8b670dfeb66'
 			}
-		console.log("directory structure")
-  console.log(dirTree)
-		
-		res.render('repo', { files: dirTree });
+		//console.log("directory structure")
+		//console.log(dirTree);
+		let dirTreeNested = {};
+		for (const filePath in dirTree) {
+			const pathArray = filePath.split('/');
+			let currentDict = dirTreeNested;
+			//last one is a file name
+			for (let i = 0; i < pathArray.length-1; i++) {
+				const pathSegment = pathArray[i];
+				if (!currentDict.hasOwnProperty(pathSegment)) {
+				  currentDict[pathSegment] = {};
+				}
+				currentDict = currentDict[pathSegment];
+			}
+			if (!currentDict.hasOwnProperty('files')) {
+				currentDict.files = [];
+			}
+			currentDict.files.push(pathArray[pathArray.length-1]);
+		}
+		console.log("-> ", JSON.stringify(dirTreeNested));
+		res.render('repo', { files: dirTreeNested });
 	}
 });
 
