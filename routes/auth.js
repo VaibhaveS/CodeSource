@@ -34,7 +34,7 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-		User.findById({ userId: profile.id }).then(existingUser => {
+		User.findById(profile.id).then(existingUser => {
 			if (existingUser) {
 				console.log('User already exists in the database');
 			} else {
