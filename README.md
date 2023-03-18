@@ -2,6 +2,8 @@
 
 ### Setup
 
+- git clone https://github.com/VaibhaveS/CodeSource.git
+
 - Make sure you have nodejs installed in your system.
 
 - Register the app in github (https://github.com/settings/applications/new) 
