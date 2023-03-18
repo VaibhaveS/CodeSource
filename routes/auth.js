@@ -11,9 +11,7 @@ const User = require('../models/user');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.
+//   serialize users into and deserialize users out of the session. 
 passport.serializeUser(function(user, done) {
     done(null, user);
 });
@@ -27,31 +25,35 @@ passport.deserializeUser(function(obj, done) {
 //   credentials (in this case, an accessToken, refreshToken, and GitHub
 //   profile), and invoke a callback with a user object.
 passport.use(new GitHubStrategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/github/callback"
+	clientID: GITHUB_CLIENT_ID,
+	clientSecret: GITHUB_CLIENT_SECRET,
+	callbackURL: "http://localhost:3000/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-		User.findById(profile.id).then(existingUser => {
-			if (existingUser) {
-				console.log('User already exists in the database');
-			} else {
-				console.log("creating new user");
-				const user = new User(profile.id, profile);
-				user.save().then(result => {
-					console.log('New user saved to the database');
-				}).catch(err => {
-					console.error(err);
-				});
-			}}).catch(err => {
+	// asynchronous verification, for effect...
+	process.nextTick(function () {
+	  User.findById(profile.id).then(existingUser => {
+		if (existingUser) {
+		  console.log('User already exists in the database');
+		  return done(null, existingUser);
+		} else {
+		  console.log("creating new user");
+		  const user = new User(profile.id, profile);
+		  user.save().then(result => {
+			console.log('New user saved to the database');
+			return done(null, result);
+		  }).catch(err => {
 			console.error(err);
-		});
-      return done(null, profile);
-    });
-  }
-));
+			return done(err);
+		  });
+		}
+	  }).catch(err => {
+		console.error(err);
+		return done(err);
+	  });
+	});
+}));
+  
 
 // GET /auth/github
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -78,7 +80,6 @@ router.get('/github/callback',
 
 router.get('/login/success', (req, res) => {
 	if (req.user) {
-	  console.log("returning", req.user)
 	  res.status(200).json({
 		success: true,
 		message: "successfull",
