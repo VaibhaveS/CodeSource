@@ -7,9 +7,9 @@ var methodOverride = require('method-override');
 var partials = require('express-partials');
 var path = require('path');
 const monogConnect = require('./util/database').mongoConnect;
-const cors = require("cors");
-const authRoute = require("./routes/auth");
-const repoRoute = require("./routes/repo");
+const cors = require('cors');
+const authRoute = require('./routes/auth');
+const repoRoute = require('./routes/repo');
 const dotenv = require('dotenv');
 dotenv.config();
 const CLIENT_URL = process.env.CLIENT_URL;
@@ -21,11 +21,11 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.use(
-	cors({
-	  origin: CLIENT_URL,
-	  methods: "GET,POST,PUT,DELETE",
-	  credentials: true,
-	})
+  cors({
+    origin: CLIENT_URL,
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  })
 );
 
 app.use(partials());
@@ -38,12 +38,9 @@ app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: fals
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/auth", authRoute);
-app.use("/repo", repoRoute);
+app.use('/auth', authRoute);
+app.use('/repo', repoRoute);
 
 monogConnect(() => {
-	app.listen(3000);
+  app.listen(3000);
 });
-
-
-
