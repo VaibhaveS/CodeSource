@@ -1,27 +1,26 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 function Navbar({ user }) {
-
   const [showAddRepoForm, setShowAddRepoForm] = useState(false);
   const [response, setResponse] = useState(null);
   const handleAddRepoFormToggle = () => setShowAddRepoForm(!showAddRepoForm);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const repoLink = document.getElementById("repoLink").value;
-    const response = await fetch("http://localhost:3000/repo/directoryTree", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const repoLink = document.getElementById('repoLink').value;
+    const response = await fetch('http://localhost:3000/repo/directoryTree', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ repoLink, user }),
-      credentials: "include"
+      credentials: 'include',
     });
     const responseData = await response.json();
     console.log(responseData);
     setResponse(responseData);
     // history.push("/repository", { response: responseData });
-    navigate("/repository");
+    navigate('/repository');
   };
 
   return (
@@ -30,18 +29,22 @@ function Navbar({ user }) {
 
       <div className="navbar-links">
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="events">Events</a></li>
-          <li><a href="#">Explore</a></li>
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="events">Events</a>
+          </li>
+          <li>
+            <a href="#">Explore</a>
+          </li>
           {user && (
             <>
-              <li><a href="myAccount">My account</a></li>
+              <li>
+                <a href="myAccount">My account</a>
+              </li>
               <li className="add-repo-container">
-                <button
-                  type="button"
-                  className="add-repo-btn"
-                  onClick={handleAddRepoFormToggle}
-                >
+                <button type="button" className="add-repo-btn" onClick={handleAddRepoFormToggle}>
                   Add repository
                 </button>
                 {showAddRepoForm && (
@@ -67,14 +70,12 @@ function Navbar({ user }) {
         <button
           type="button"
           className="connection"
-          onClick={() => window.location.href = 'http://localhost:3000/auth/github'}
+          onClick={() => (window.location.href = 'http://localhost:3000/auth/github')}
         >
           Login with Github
         </button>
       )}
-      {user && (
-        <h2>Hello, {user.displayName}</h2>
-      )}
+      {user && <h2>Hello, {user.displayName}</h2>}
     </nav>
   );
 }
