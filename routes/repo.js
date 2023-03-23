@@ -1,11 +1,21 @@
 const router = require('express').Router();
 const https = require('https');
+const Token = require('../models/token');
 
-const httpGet = (url) => {
-  console.log(url);
+const httpGet = (url, accessToken) => {
+  const defaultHeaders = {
+    'User-Agent':
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36',
+    Authorization: 'token ' + accessToken,
+  };
+  const options = {
+    hostname: 'api.github.com',
+    headers: defaultHeaders,
+    path: url,
+  };
   return new Promise((resolve, reject) => {
     https
-      .get(url, (res) => {
+      .get(options, (res) => {
         res.setEncoding('utf8');
         let body = '';
         res.on('data', (chunk) => (body += chunk));
@@ -15,23 +25,27 @@ const httpGet = (url) => {
   });
 };
 
-async function parseTree(repoName, sha_url, userName) {
-  const options = {
-    hostname: 'api.github.com',
-    path: '/repos/' + userName + '/' + repoName + '/git/trees/' + sha_url,
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36',
-    },
-  };
-  const response = JSON.parse(await httpGet(options));
+async function getAccessToken(userId) {
+  try {
+    const token = await Token.findById(userId);
+    return token.accessToken;
+  } catch (err) {
+    console.log('no token associated with this user::', userId);
+    return null;
+  }
+}
+
+async function parseTree(repoName, sha_url, userName, accessToken) {
+  const response = JSON.parse(
+    await httpGet('/repos/' + userName + '/' + repoName + '/git/trees/' + sha_url, accessToken)
+  );
   const files = {};
   for (let i = 0; i < response.tree.length; i++) {
     const item = response.tree[i];
     if (item.type === 'blob') {
       files[item.path] = item.sha;
     } else if (item.type === 'tree') {
-      const subFiles = await parseTree(repoName, item.sha);
+      const subFiles = await parseTree(repoName, item.sha, userName, accessToken);
       for (const subFile in subFiles) {
         files[item.path + '/' + subFile] = subFiles[subFile];
       }
@@ -60,29 +74,21 @@ router.post('/directoryTree', async function (req, res) {
     'src/main/resources/todos.csv': '20cd2d7fe94ba2b69e7612cf5fef9fd475c30fef',
     'src/test/resources/features/todoBatch.feature': '2d896393dfbd92d3202f92a513967492802c228c',
   });
-  const options = {
-    hostname: 'api.github.com',
-    path: '/repos/' + req.user.username + '/' + req.body.repoLink,
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36',
-    },
-  };
-  const body = JSON.parse(await httpGet(options));
+  const accessToken = await getAccessToken(req.user.details.userId);
+  const body = JSON.parse(
+    await httpGet('/repos/' + req.user.details.username + '/' + req.body.repoLink, accessToken)
+  );
   if (body.hasOwnProperty('message')) {
     res.render('notValid', { user: req.user });
   } else {
-    const optionsTwo = {
-      hostname: 'api.github.com',
-      path: '/repos/' + req.user.username + '/' + req.body.repoLink + '/commits',
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1521.3 Safari/537.36',
-      },
-    };
-    const bodyTwo = JSON.parse(await httpGet(optionsTwo));
+    const bodyTwo = JSON.parse(
+      await httpGet(
+        '/repos/' + req.user.details.username + '/' + req.body.repoLink + '/commits',
+        accessToken
+      )
+    );
     const url = bodyTwo[0].commit.tree.sha;
-    const dirTree = await parseTree(req.body.repoLink, url, req.user.username);
+    const dirTree = await parseTree(req.body.repoLink, url, req.user.details.username, accessToken);
     let dirTreeNested = {};
     for (const filePath in dirTree) {
       const pathArray = filePath.split('/');
