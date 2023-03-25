@@ -74,7 +74,7 @@ router.post('/directoryTree', async function (req, res) {
     'src/main/resources/todos.csv': '20cd2d7fe94ba2b69e7612cf5fef9fd475c30fef',
     'src/test/resources/features/todoBatch.feature': '2d896393dfbd92d3202f92a513967492802c228c',
   });
-  const accessToken = await getAccessToken(req.user.details.userId);
+  const accessToken = await getAccessToken(req.user.userId);
   const body = JSON.parse(
     await httpGet('/repos/' + req.user.details.username + '/' + req.body.repoLink, accessToken)
   );
