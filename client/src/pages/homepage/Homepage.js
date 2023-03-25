@@ -18,7 +18,7 @@ const Homepage = () => {
         </div>
 
         <div class="hero-droite">
-          <img src={banner} alt="rocket maaan" />
+          <img src={banner} alt="banner" />
         </div>
       </section>
     </div>

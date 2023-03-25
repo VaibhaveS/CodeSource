@@ -19,8 +19,8 @@ body {
 
 /* Hero Section */
 .section-hero {
+  margin-left: 2.5rem;
   position: relative;
-  top: 11.667rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -96,9 +96,6 @@ body {
 
 @media screen and (max-width: 850px) {
   /* Hero */
-  .section-hero {
-    top: 6.25rem;
-  }
 
   .hero-gauche,
   .hero-droite {
