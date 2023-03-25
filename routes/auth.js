@@ -7,6 +7,7 @@ const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const CLIENT_URL = process.env.CLIENT_URL;
 const User = require('../models/user');
+const Token = require('../models/token');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -31,21 +32,19 @@ passport.use(
       callbackURL: 'http://localhost:3000/auth/github/callback',
     },
     function (accessToken, refreshToken, profile, done) {
+      console.log(accessToken, refreshToken);
       // asynchronous verification, for effect...
       process.nextTick(function () {
+        //create User if not present in DB
         User.findById(profile.id)
           .then((existingUser) => {
-            if (existingUser) {
-              console.log('User already exists in the database');
-              return done(null, existingUser);
-            } else {
+            if (!existingUser) {
               console.log('creating new user');
               const user = new User(profile.id, profile);
               user
                 .save()
                 .then((result) => {
                   console.log('New user saved to the database');
-                  return done(null, result);
                 })
                 .catch((err) => {
                   console.error(err);
@@ -57,6 +56,22 @@ passport.use(
             console.error(err);
             return done(err);
           });
+        //update/create token for user
+        Token.updateOrCreate(profile.id, accessToken, refreshToken)
+          .then((token) => {
+            console.log('created or updated token for user', profile.id);
+          })
+          .catch((err) => {
+            console.error(err);
+            return done(err);
+          });
+        //return user
+        User.findById(profile.id).then((existingUser) => {
+          if (existingUser) {
+            return done(null, existingUser);
+          }
+          return done(null);
+        });
       });
     }
   )
@@ -85,6 +100,7 @@ router.get(
   '/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
   function (req, res) {
+    console.log(req.user);
     res.redirect(CLIENT_URL);
   }
 );
