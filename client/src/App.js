@@ -1,7 +1,11 @@
 import './App.css';
-import Navbar from './pages/Navbar';
+import Navbar from './Components/Navbar';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Homepage from './pages/homepage/Homepage';
+import Events from './pages/events/Events';
+import Explore from './pages/explore/Explore';
+import MyAccount from './pages/myAccount/MyAccount';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -32,9 +36,17 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Navbar user={user} />
-    </Router>
+    <>
+      <Router>
+        <Navbar user={user} />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/myAccount" element={<MyAccount />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 

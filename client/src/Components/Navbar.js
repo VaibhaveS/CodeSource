@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import './Navbar.css';
 
 function Navbar({ user }) {
   const [showAddRepoForm, setShowAddRepoForm] = useState(false);
@@ -30,18 +31,18 @@ function Navbar({ user }) {
       <div className="navbar-links">
         <ul>
           <li>
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="events">Events</a>
+            <Link to="/events">Events</Link>
           </li>
           <li>
-            <a href="#">Explore</a>
+            <Link to="/explore">Explore</Link>
           </li>
           {user && (
             <>
               <li>
-                <a href="myAccount">My account</a>
+                <Link to="/myAccount">My account</Link>
               </li>
               <li className="add-repo-container">
                 <button type="button" className="add-repo-btn" onClick={handleAddRepoFormToggle}>
@@ -75,7 +76,11 @@ function Navbar({ user }) {
           Login with Github
         </button>
       )}
-      {user && <h2>Hello, {user.displayName}</h2>}
+      {user && (
+        <h2>
+          Hello, {user.details.displayName ? user.details.displayName : user.details.username}
+        </h2>
+      )}
     </nav>
   );
 }
