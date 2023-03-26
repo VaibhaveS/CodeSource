@@ -26,8 +26,9 @@ function Navbar({ user }) {
 
   return (
     <nav className="navbar">
-      <h1>CodeSource</h1>
-
+      <Link to="/" id="site-title">
+        CodeSource
+      </Link>
       <div className="navbar-links">
         <ul>
           <li>

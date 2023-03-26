@@ -12,6 +12,13 @@ nav {
   z-index: 10;
 }
 
+nav #site-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+
 nav h2 {
   font-size: 1.625rem;
   cursor: pointer;
