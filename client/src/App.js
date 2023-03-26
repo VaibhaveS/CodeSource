@@ -6,6 +6,7 @@ import Homepage from './pages/homepage/Homepage';
 import Events from './pages/events/Events';
 import Explore from './pages/explore/Explore';
 import MyAccount from './pages/myAccount/MyAccount';
+import Footer from './pages/footer/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,6 +47,7 @@ function App() {
           <Route path="/myAccount" element={<MyAccount />} />
         </Routes>
       </Router>
+      <Footer />
     </>
   );
 }

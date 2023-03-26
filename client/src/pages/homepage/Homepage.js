@@ -8,7 +8,7 @@ const Homepage = () => {
       <section class="section-hero">
         <div class="hero-gauche">
           <h1>
-            Codebase <strong>clarity</strong> <br /> made easy!
+            Codebase <strong>Clarity</strong> <br /> Made easy!
           </h1>
 
           <p>
