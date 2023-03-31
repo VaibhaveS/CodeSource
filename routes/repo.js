@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const https = require('https');
-const Token = require('../models/token');
+const Token = require('../models/token'); //getting obj from db
 
 const httpGet = (url, accessToken) => {
   const defaultHeaders = {

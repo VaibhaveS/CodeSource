@@ -10,6 +10,8 @@ const monogConnect = require('./util/database').mongoConnect;
 const cors = require('cors');
 const authRoute = require('./routes/auth');
 const repoRoute = require('./routes/repo');
+const eventRoute = require('./routes/events');
+
 const dotenv = require('dotenv');
 dotenv.config();
 const CLIENT_URL = process.env.CLIENT_URL;
@@ -40,6 +42,7 @@ app.use(passport.session());
 
 app.use('/auth', authRoute);
 app.use('/repo', repoRoute);
+app.use('/events', eventRoute);
 
 monogConnect(() => {
   app.listen(3000);
