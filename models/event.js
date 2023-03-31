@@ -1,20 +1,24 @@
-const { getDb } = require('../util/database');
+const { getDb } = require("../util/database");
 
-const mongoConnect = require('../util/database').getDb;
+const mongoConnect = require("../util/database").getDb;
 
 class Event {
   constructor(details) {
     this.details = details;
+    title = details.title;
+    date = details.date;
+    location = details.location;
+    description = details.description;
   }
 
   save() {
     const db = getDb();
     return db
-      .collection('events')
+      .collection("events")
       .countDocuments()
       .then((count) => {
         this.EventId = count + 1;
-        return db.collection('events').insertOne(this);
+        return db.collection("events").insertOne(this);
       })
       .then((result) => {
         console.log(result);
@@ -27,11 +31,11 @@ class Event {
   static findAll() {
     const db = getDb();
     return db
-      .collection('events')
+      .collection("events")
       .find()
       .toArray()
       .then((events) => {
-        console.log('returning', events);
+        console.log("returning", events);
         return events;
       })
       .catch((err) => {
