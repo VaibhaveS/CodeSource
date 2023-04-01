@@ -4,11 +4,11 @@ const mongoConnect = require("../util/database").getDb;
 
 class Event {
   constructor(details) {
-    this.details = details;
     title = details.title;
     date = details.date;
     location = details.location;
     description = details.description;
+    this.details = details;
   }
 
   save() {

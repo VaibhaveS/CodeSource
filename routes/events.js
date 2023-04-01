@@ -3,6 +3,7 @@ const https = require("https");
 
 router.get("/events", function (req, res) {
   Event.findAll().then((events) => {
+    //details attribute in event.js created to map here
     const eventsObject = events.map((event) => event.details);
   });
 });
@@ -10,6 +11,7 @@ router.get("/events", function (req, res) {
 router.get("/update-events", function (req, res) {
   Event.findAll().then((events) => {
     const eventsObject = events.map((event) => event.details);
+    //to do - take object from front-end and store in db
     var selectedType = req.query.type;
     var filteredEvents = eventsObject.filter(function (event) {
       return (
