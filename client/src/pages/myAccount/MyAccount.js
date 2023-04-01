@@ -1,9 +1,16 @@
 import React from 'react';
-
-const MyAccount = () => {
+import RepoList from './RepoList';
+import AccountDetails from './AccountDetails';
+import './myAccount.scss'
+const MyAccount = ({user}) => {
   return (
     <div>
-      <h1>My Account Page</h1>
+      <div className="container">  
+        {console.log("Hi")}
+        {user && console.log(user)}
+        {user && <AccountDetails user={user}/>}
+        {user && <RepoList user={user}/> }
+      </div>
     </div>
   );
 };
