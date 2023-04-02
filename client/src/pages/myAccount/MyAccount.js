@@ -5,9 +5,7 @@ import './myAccount.scss'
 const MyAccount = ({user}) => {
   return (
     <div>
-      <div className="container">  
-        {console.log("Hi")}
-        {user && console.log(user)}
+      <div className="container">
         {user && <AccountDetails user={user}/>}
         {user && <RepoList user={user}/> }
       </div>
