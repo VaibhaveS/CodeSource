@@ -36,6 +36,20 @@ async function getAccessToken(userId) {
   }
 }
 
+async function getNotion(req, repoName, fileId) {
+  Key = req.userName + '#' + repoName;
+  return Repo.findByfileId(fileId);
+}
+
+async function updateContent(document, repoName, req) {
+  Key = req.userName + '#' + repoName;
+  document['key'] = key;
+}
+
+async function getContent(url, accessToken) {
+  const response = JSON.parse(await httpGet(url, accessToken));
+  return response.content;
+}
 async function parseTree(repoName, sha_url, userName, accessToken) {
   const response = JSON.parse(
     await httpGet('/repos/' + userName + '/' + repoName + '/git/trees/' + sha_url, accessToken)
@@ -45,6 +59,7 @@ async function parseTree(repoName, sha_url, userName, accessToken) {
     const item = response.tree[i];
     if (item.type === 'blob') {
       files[item.path] = item.sha;
+      content = await getContent(item.url, accessToken);
     } else if (item.type === 'tree') {
       const subFiles = await parseTree(repoName, item.sha, userName, accessToken);
       for (const subFile in subFiles) {
