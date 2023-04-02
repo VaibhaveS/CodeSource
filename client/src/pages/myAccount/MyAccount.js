@@ -2,6 +2,7 @@ import React from 'react';
 import RepoList from './RepoList';
 import AccountDetails from './AccountDetails';
 import './myAccount.scss'
+
 const MyAccount = ({user}) => {
   return (
     <div>

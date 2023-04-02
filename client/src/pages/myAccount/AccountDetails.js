@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import './myAccount.scss'
+
 const AccountDetails = ({user}) => {
     return (<div className="card" data-state="#about">
     <div className="card-header">
         {console.log("HEllo")}
         {console.log(user)}
       {/* <div className="card-cover" style="background-image: url('https://images.unsplash.com/photo-1549068106-b024baf5062d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80')"></div> --> */}
-      <img className="card-avatar" src={user.details.photos[0].value} alt="avatar" />  
-      {console.log({user})}    
+      <img className="card-avatar" src={user.details.photos[0].value} alt="avatar" /> 
       <h2 className="card-jobtitle">it's about community.</h2>
     </div>
     <div className="card-main">
