@@ -1,21 +1,19 @@
 const { getDb } = require('../util/database');
-
 const mongoConnect = require('../util/database').getDb;
 
 class Event {
-  constructor(details) {
-    this.details = details;
+  constructor(title, location, date, description) {
+    this.title = title;
+    this.date = date;
+    this.location = location;
+    this.description = description;
   }
 
   save() {
     const db = getDb();
     return db
       .collection('events')
-      .countDocuments()
-      .then((count) => {
-        this.EventId = count + 1;
-        return db.collection('events').insertOne(this);
-      })
+      .insertOne(this)
       .then((result) => {
         console.log(result);
       })
@@ -33,6 +31,20 @@ class Event {
       .then((events) => {
         console.log('returning', events);
         return events;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  static findById(eventId) {
+    const db = getDb();
+    return db
+      .collection('events')
+      .findOne({ _id: new mongoConnect.ObjectId(eventId) })
+      .then((event) => {
+        console.log('returning', event);
+        return evnet;
       })
       .catch((err) => {
         console.log(err);

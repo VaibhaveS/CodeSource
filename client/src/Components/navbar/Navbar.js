@@ -26,7 +26,7 @@ function Navbar({ user }) {
 
   return (
     <nav className="navbar">
-      <h1>CodeSource</h1>
+      <h1 class="title">CodeSource</h1>
 
       <div className="navbar-links">
         <ul>
