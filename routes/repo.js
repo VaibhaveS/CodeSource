@@ -36,15 +36,24 @@ async function getAccessToken(userId) {
   }
 }
 
-async function getNotion(req, repoName, fileId) {
+router.post('/getNotionData', async function getNotion(req, repoName, fileId) {
   Key = req.userName + '#' + repoName;
-  return Repo.findByfileId(fileId);
-}
+  return Repo.findByfileId(Key, fileId);
+});
+//[[uid, html, tag], [uid, html, tag]]
 
-async function updateContent(document, repoName, req) {
-  Key = req.userName + '#' + repoName;
-  document['key'] = key;
-}
+router.post('/updateContent', async function (req, res) {
+  Key = req.user.userName + '#' + req.body.repoName;
+  notionData = {};
+  for (var i = 0; i < req.notionList.length; i++) {
+    var curr = [];
+    curr.push(req.notionList[i][1]);
+    curr.push(req.notionList[i][2]);
+    notionData[req.notionList[i][0]] = curr;
+  }
+  Repo.insertNotion(notionData, Key, req.fileId);
+  return res.status(200);
+});
 
 async function getContent(url, accessToken) {
   const response = JSON.parse(await httpGet(url, accessToken));
@@ -102,6 +111,30 @@ async function getDirectoryTree(req) {
         currentDict.files = [];
       }
       currentDict.files.push(pathArray[pathArray.length - 1]);
+    }
+    let Id = 0;
+    for (let component in dirTreeNested) {
+      dirTreeNested[component]['directoryId'] = Id;
+      Id += 1;
+      if (component == 'files') {
+        var newFiles = [];
+        for (let i = 0; i < dirTreeNested[component].length; i++) {
+          newFiles.push({ fileId: Id, fileName: dirTreeNested[component][i] });
+          Id += 1;
+        }
+        dirTreeNested[component] = newFiles;
+      } else {
+        for (let subComp in dirTreeNested[component]) {
+          if (subComp == 'files') {
+            var newFiles = [];
+            for (let i = 0; i < dirTreeNested[component][subComp].length; i++) {
+              newFiles.push({ fileId: Id, fileName: dirTreeNested[component][subComp][i] });
+              Id += 1;
+            }
+            dirTreeNested[component][subComp] = newFiles;
+          }
+        }
+      }
     }
     return dirTreeNested;
     //TO AVOID RATE LIMIT, RETURNING PRE-DEFINED STRUCTURE FOR DEBUGGING

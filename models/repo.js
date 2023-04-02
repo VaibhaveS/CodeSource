@@ -19,38 +19,6 @@ class Repo {
       .then((count) => {
         console.log(this);
         this.RepoId = count + 1;
-        var fileCount = 0;
-        for (let component in this.details['dirTree']) {
-          console.log(component);
-          if (component == 'files') {
-            let fileCounter = 0;
-            let oldFiles = this.details.dirTree[component];
-            let newFiles = [];
-            for (var i = 0; i < oldFiles.length; i++) {
-              newFiles.push([oldFiles[i], fileCounter]);
-              fileCounter += 1;
-            }
-            this.details.dirTree['files'] = newFiles;
-            console.log(newFiles);
-            continue;
-          }
-          for (let key in this.details.dirTree[component]) {
-            console.log(key);
-            if (key == 'files') {
-              let newFiles = [];
-              let fileCounter = 0;
-              console.log(this.details.dirTree[component][key]);
-              let oldFiles = this.details.dirTree[component][key];
-              for (var i = 0; i < oldFiles.length; i++) {
-                newFiles.push([oldFiles[i], fileCounter]);
-                fileCounter += 1;
-              }
-              console.log(newFiles);
-              //component['files'] = newFiles;
-              this.details.dirTree[component]['files'] = newFiles;
-            }
-          }
-        }
         return db.collection('repos').insertOne(this);
       })
       .then((result) => {
@@ -80,13 +48,19 @@ class Repo {
     const db = getDb();
     return db.collection('repos').findOne({ key: key });
   }
-  static insertNotion(document, repoKey) {
+  static insertNotion(fileDetails, repoKey, fileId) {
     const db = getDb();
-    const details = db.collection('Notion').findOne({ repoKey: repoKey });
-    if (details.size()) {
-      db.collection.updateOne({ repoKey: key }, { $push: document });
+    const repoDetails = db.collection('Notion').findOne({ key: repoKey });
+    const fileData = db
+      .collection('Notion')
+      .findOne({ key: repoKey }, { fileId: { $exists: true } });
+    if (repoDetails.size()) {
+      db.collection('Notion').updateOne({ key: repoKey }, { $push: fileDetails });
+    } else if (fileData.size()) {
+      db.collection('Notion').updateOne({ key: repoKey }, { $set: { fileId: fileDetails } });
     } else {
-      document['Key'] = repoKey;
+      document['key'] = repoKey;
+      document[fileId] = fileDetails;
       db.collection('Notion').insertOne(document);
     }
   }
@@ -94,17 +68,16 @@ class Repo {
     // repoKey = userId + '#' + repoName
     /*
       repoKey:
-        fileId:
-          UID:
-            HTML
-            Tags
-          UID:
-            HTML
-            Tags
+      fileId:
+        UID:
+          HTML
+          Tags
+        UID :
+          HTML
+          Tags
     */
     const db = getDb();
-    let details = db.collection('Notion').findOne({ repoKey: repoKey });
-    return details.findOne({ fileId: fileId }).toArray();
+    return db.collection('Notion').findOne({ key: repoKey }, { fileId: fileId }).toArray();
   }
 }
 
