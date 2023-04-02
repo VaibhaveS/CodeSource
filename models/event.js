@@ -1,4 +1,5 @@
 const { getDb } = require('../util/database');
+var ObjectId = require('mongodb').ObjectId;
 const mongoConnect = require('../util/database').getDb;
 
 class Event {
@@ -39,12 +40,27 @@ class Event {
 
   static findById(eventId) {
     const db = getDb();
+    return db.collection('events').findOne({ _id: new ObjectId(eventId) });
+  }
+
+  static updateOrCreate(event) {
+    console.log(event, 'updating');
+    const db = getDb();
     return db
       .collection('events')
-      .findOne({ _id: new mongoConnect.ObjectId(eventId) })
-      .then((event) => {
-        console.log('returning', event);
-        return evnet;
+      .updateOne(
+        { _id: new ObjectId(event._id) },
+        {
+          $set: {
+            title: event.title,
+            location: event.location,
+            date: event.date,
+            description: event.description,
+          },
+        }
+      )
+      .then((result) => {
+        console.log(result);
       })
       .catch((err) => {
         console.log(err);

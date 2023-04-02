@@ -1,40 +1,42 @@
 const router = require('express').Router();
 const https = require('https');
+var ObjectId = require('mongodb').ObjectId;
 const Event = require('../models/event');
+const { type } = require('express/lib/response');
 
-router.get('/events', function (req, res) {
+router.get('/events', async function (req, res) {
   let events = [];
-  Event.findAll().then((event) => {
+  await Event.findAll().then((event) => {
     events.push(event);
   });
-  return events;
+  return res.status(200).json(events);
 });
 
-//add-event
 router.post('/addEvent', function (req, res) {
   const { title, location, date, description } = req.body;
   const newEvent = new Event(title, location, date, description);
   newEvent.save();
+  return res.status(200).json(newEvent);
 });
 
-//update-event
 router.post('/event', function (req, res) {
-  const eventId = req.body.eventId; // ID is passed in the request body
+  const eventId = req.body.eventId;
   const { title, location, date, description } = req.body;
   Event.findById(eventId)
     .then((event) => {
+      if (!event) {
+        throw new Error('Event not found');
+      }
       event.title = title;
-      event.location = location;
-      event.date = date;
-      event.description = description;
-      return event.save();
+      Event.updateOrCreate(event);
     })
-    .then((updatedEvent) => {
-      res.status(200).json(updatedEvent);
+    .then((result) => {
+      console.log('Event updated successfully');
+      console.log(result);
+      res.statusCode(200).json(result);
     })
     .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error updating event');
+      res.statusCode(500).json(err);
     });
 });
 
