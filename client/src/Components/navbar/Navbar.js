@@ -10,11 +10,11 @@ function Navbar({ user }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const repoLink = document.getElementById('repoLink').value;
+    const repoName = document.getElementById('repoName').value;
     const response = await fetch('http://localhost:3000/repo/directoryTree', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ repoLink, user }),
+      body: JSON.stringify({ repoName, user }),
       credentials: 'include',
     });
     const responseData = await response.json();
@@ -54,8 +54,8 @@ function Navbar({ user }) {
                       <input
                         type="text"
                         placeholder="Repository Name"
-                        id="repoLink"
-                        name="repoLink"
+                        id="repoName"
+                        name="repoName"
                       />
                       <button type="submit">Submit</button>
                     </form>
