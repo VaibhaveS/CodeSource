@@ -88,26 +88,31 @@ async function getDirectoryTree(req) {
       }
       currentDict.files.push(pathArray[pathArray.length - 1]);
     }
-    return dirTreeNested;
-    //TO AVOID RATE LIMIT, RETURNING PRE-DEFINED STRUCTURE FOR DEBUGGING
-    // return {
-    //   '.gitignore': '549e00a2a96fa9d7c5dbc9859664a78d980158c2',
-    //   'README.md': 'b0aa880afa59f9f8059396d981b415566f3f52eb',
-    //   mvnw: '8a8fb2282df5b8f7263470a5a2dc0e196f35f35f',
-    //   'pom.xml': 'c0c1b00ab4521ff6ca0172b2213cefdfbbd65451',
-    //   'shardProp/SHARD1.properties': '202ed44016d28dc07a3516cd5afbc9418c992fa2',
-    //   'src/main/java/com/example/done/DoneApplication.java':
-    //     '38394a6d41da2782e0077849e73fc449eaf67e1d',
-    //   'src/main/java/com/example/done/batch/JobCompletionNotificationListener.java':
-    //     '91a7e36017433f19d59eecb90466de76c382a26f',
-    //   'src/main/resources/application.properties': '05da2efdc7abb784f491beeb0c3863bda3375b75',
-    //   'src/main/resources/db.changelog/add-column-priority.xml':
-    //     'c733d1b5e3e893ab51cadcfdb2776aac3b0bb128',
-    //   'src/main/resources/db.changelog/shard/add-column-context-key.xml':
-    //     'b6d0085c8217a5eef52f42e7d2dc1e4b80543e6a',
-    //   'src/main/resources/todos.csv': '20cd2d7fe94ba2b69e7612cf5fef9fd475c30fef',
-    //   'src/test/resources/features/todoBatch.feature': '2d896393dfbd92d3202f92a513967492802c228c',
-    // };
+    let Id = 0;
+    for (let component in dirTreeNested) {
+      dirTreeNested[component]['directoryId'] = Id;
+      Id += 1;
+      if (component == 'files') {
+        var newFiles = [];
+        for (let i = 0; i < dirTreeNested[component].length; i++) {
+          newFiles.push({ fileId: Id, fileName: dirTreeNested[component][i] });
+          Id += 1;
+        }
+        dirTreeNested[component] = newFiles;
+      } else {
+        for (let subComp in dirTreeNested[component]) {
+          if (subComp == 'files') {
+            var newFiles = [];
+            for (let i = 0; i < dirTreeNested[component][subComp].length; i++) {
+              newFiles.push({ fileId: Id, fileName: dirTreeNested[component][subComp][i] });
+              Id += 1;
+            }
+            dirTreeNested[component][subComp] = newFiles;
+          }
+        }
+      }
+    }
+    return res.status(200).send(dirTreeNested);
   }
 }
 
