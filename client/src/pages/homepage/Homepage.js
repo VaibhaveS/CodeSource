@@ -4,9 +4,9 @@ import banner from '../../assets/banner.png';
 
 const Homepage = () => {
   return (
-    <div class="container">
-      <section class="section-hero">
-        <div class="hero-gauche">
+    <div className="container">
+      <section className="section-hero">
+        <div className="hero-gauche">
           <h1>
             Codebase <strong>Clarity</strong> <br /> Made easy!
           </h1>
@@ -17,7 +17,7 @@ const Homepage = () => {
           </p>
         </div>
 
-        <div class="hero-droite">
+        <div className="hero-droite">
           <img src={banner} alt="banner" />
         </div>
       </section>

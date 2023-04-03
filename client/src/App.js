@@ -44,7 +44,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<Events />} />
           <Route path="/explore" element={<Explore />} />
-          <Route path="/myAccount" element={<MyAccount />} />
+          <Route path="/myAccount" element={<MyAccount user={user} />} />
         </Routes>
       </Router>
       <Footer />
