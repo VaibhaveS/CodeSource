@@ -106,6 +106,30 @@ router.post('/directoryTree', async function (req, res) {
       }
       currentDict.files.push(pathArray[pathArray.length - 1]);
     }
+    let Id = 0;
+    for (let component in dirTreeNested) {
+      dirTreeNested[component]['directoryId'] = Id;
+      Id += 1;
+      if (component == 'files') {
+        var newFiles = [];
+        for (let i = 0; i < dirTreeNested[component].length; i++) {
+          newFiles.push({ fileId: Id, fileName: dirTreeNested[component][i] });
+          Id += 1;
+        }
+        dirTreeNested[component] = newFiles;
+      } else {
+        for (let subComp in dirTreeNested[component]) {
+          if (subComp == 'files') {
+            var newFiles = [];
+            for (let i = 0; i < dirTreeNested[component][subComp].length; i++) {
+              newFiles.push({ fileId: Id, fileName: dirTreeNested[component][subComp][i] });
+              Id += 1;
+            }
+            dirTreeNested[component][subComp] = newFiles;
+          }
+        }
+      }
+    }
     return res.status(200).send(dirTreeNested);
   }
 });
