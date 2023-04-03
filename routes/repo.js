@@ -43,15 +43,17 @@ router.post('/getNotionData', async function getNotion(req, repoName, fileId) {
 //[[uid, html, tag], [uid, html, tag]]
 
 router.post('/updateContent', async function (req, res) {
-  Key = req.user.userName + '#' + req.body.repoName;
+  console.log('HIIII');
+  Key = 'mb' + '#' + req.body.repoName;
   notionData = {};
-  for (var i = 0; i < req.notionList.length; i++) {
+  for (var i = 0; i < req.body.notionList.length; i++) {
     var curr = [];
-    curr.push(req.notionList[i][1]);
-    curr.push(req.notionList[i][2]);
-    notionData[req.notionList[i][0]] = curr;
+    curr.push(req.body.notionList[i][1]);
+    curr.push(req.body.notionList[i][2]);
+    notionData[req.body.notionList[i][0]] = curr;
   }
-  Repo.insertNotion(notionData, Key, req.fileId);
+  console.log(notionData);
+  Repo.insertNotion(notionData, Key, req.body.fileId);
   return res.status(200);
 });
 
@@ -114,8 +116,6 @@ async function getDirectoryTree(req) {
     }
     let Id = 0;
     for (let component in dirTreeNested) {
-      dirTreeNested[component]['directoryId'] = Id;
-      Id += 1;
       if (component == 'files') {
         var newFiles = [];
         for (let i = 0; i < dirTreeNested[component].length; i++) {
@@ -123,6 +123,8 @@ async function getDirectoryTree(req) {
           Id += 1;
         }
         dirTreeNested[component] = newFiles;
+        dirTreeNested[component]['directoryId'] = Id;
+        Id += 1;
       } else {
         for (let subComp in dirTreeNested[component]) {
           if (subComp == 'files') {
@@ -132,6 +134,8 @@ async function getDirectoryTree(req) {
               Id += 1;
             }
             dirTreeNested[component][subComp] = newFiles;
+            dirTreeNested[component]['directoryId'] = Id;
+            Id += 1;
           }
         }
       }
