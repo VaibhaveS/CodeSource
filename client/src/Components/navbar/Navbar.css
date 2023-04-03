@@ -100,3 +100,7 @@ nav .connection:hover {
     display: none;
   }
 }
+
+h1.title {
+  font-size: 2rem;
+}

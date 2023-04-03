@@ -1,11 +1,12 @@
 import './App.css';
-import Navbar from './Components/Navbar';
+import Navbar from './Components/navbar/Navbar';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Homepage from './pages/homepage/Homepage';
 import Events from './pages/events/Events';
 import Explore from './pages/explore/Explore';
 import MyAccount from './pages/myAccount/MyAccount';
+import Footer from './Components/footer/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,6 +47,7 @@ function App() {
           <Route path="/myAccount" element={<MyAccount />} />
         </Routes>
       </Router>
+      <Footer />
     </>
   );
 }
