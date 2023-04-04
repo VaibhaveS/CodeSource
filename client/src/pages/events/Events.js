@@ -1,7 +1,67 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Events.css';
+import AddEventForm from '../../Components/addEventForm/AddEventForm';
 
 const Events = () => {
+  const [events, setEvents] = useState([]);
+  const modalRef = useRef(null);
+  const outsideModalRef = useRef(null);
+
+  useEffect(() => {
+    outsideModalRef.current.addEventListener('click', handleOutsideClick, true);
+    document.getElementById('event-type-filter').addEventListener('change', handleFilterChange);
+    fetchEvents();
+
+    return () => {
+      if (outsideModalRef.current) {
+        outsideModalRef.current.removeEventListener('click', handleOutsideClick, true);
+      }
+      if (document.getElementById('event.type-filter')) {
+        document
+          .getElementById('event-type-filter')
+          .removeEventListener('change', handleFilterChange);
+      }
+    };
+  }, []);
+
+  const handleOutsideClick = (e) => {
+    if (!modalRef.current.contains(e.target)) {
+      // clicked outside modal
+      closeModal();
+    }
+  };
+
+  const openModal = () => {
+    var modal = document.getElementById('myModal');
+    modal.style.display = 'block';
+  };
+
+  const closeModal = () => {
+    var modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+  };
+
+  const handleFilterChange = (e) => {
+    var selectedType = e.target.value.toLowerCase();
+    //Not handling virtual and on-site events as of now
+  };
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/events/events', {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        const message = `An error has occured: ${response.status}`;
+        throw new Error(message);
+      }
+      const responseData = await response.json();
+      setEvents(responseData[0]);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <>
       <div id="cf-in-store-events">
@@ -26,11 +86,11 @@ const Events = () => {
                 {/* <!--bes-row ends--> */}
                 <div className="filters">
                   {/* <!-- <button onclick="openModal()" id = "fourth" className="fourth">Add Event</button> --> */}
-                  <button type="button" className="connection" onclick="openModal()">
+                  <button type="button" className="connection" onClick={openModal}>
                     Add event
                   </button>
                   <label>&nbsp;&nbsp;Filter by Event Type:</label>
-                  <select id="event-type-filter" class="connection">
+                  <select id="event-type-filter" className="connection">
                     <option value="all" className="value">
                       All
                     </option>
@@ -59,52 +119,29 @@ const Events = () => {
 
         <section id="events-list">
           <div className="event-container" id="event-container">
-            {/* <% for (var i = 0; i < events.length; i += 3) { %> */}
             <div className="row">
-              {/* <% for (var j = i; j < i + 3 && j < events.length; j++) { %> */}
-              <div className="event-col">
-                <div className="event-card">
-                  {/* <h3><%= events[j].title %></h3>
-                          <p>Date: <%= events[j].date %></p>
-                          <p>Location: <%= events[j].location %></p>
-                          <p>Description: <%= events[j].description %></p> */}
-                </div>
-              </div>
-              {/* <% } %> */}
+              {events.map((event) => {
+                return (
+                  <div className="event-col">
+                    <div className="event-card" key={event._id}>
+                      <h3>{event.title}</h3>
+                      <p>Date: {event.date}</p>
+                      <p>Location: {event.location}</p>
+                      <p>Description: {event.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            {/* <% } %> */}
           </div>
         </section>
       </div>
-      <div id="myModal" className="modal">
-        <div className="modal-content">
-          <span className="close" onclick="closeModal()">
-            &times;
-          </span>
-          <h2 style={{ textAlign: ' center' }}>Add New Event</h2>
-          <form action="/add-events" method="post">
-            <label for="title">Title:</label>
-            <input className="text" type="text" id="title" name="title" required />
-            <br />
-            <br />
-            <label for="date">Date:</label>
-            <input className="text" type="date" id="date" name="date" required />
-            <br />
-            <br />
-            <label for="location">Location:</label>
-            <input className="text" type="text" id="location" name="location" required />
-            <br />
-            <br />
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
-            <br />
-            <br />
-            <button type="submit" className="connection" style={{ margin: 'auto' }}>
-              Add Event
-            </button>
-          </form>
-        </div>
-      </div>
+      <AddEventForm
+        outsideModalRef={outsideModalRef}
+        modalRef={modalRef}
+        closeModal={closeModal}
+        fetchEvents={fetchEvents}
+      />
     </>
   );
 };

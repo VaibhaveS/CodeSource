@@ -231,58 +231,12 @@ body {
   margin-right: 10px;
 }
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 60%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 *,
 *:before,
 *:after {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
-
-form {
-  overflow: hidden;
-  max-width: 300px;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background: #f4f7f8;
-  border-radius: 8px;
 }
 
 input[type='password'],
@@ -314,16 +268,6 @@ input[type='checkbox'] {
   margin: 0 4px 8px 0;
 }
 
-fieldset {
-  margin-bottom: 30px;
-  border: none;
-}
-
-legend {
-  font-size: 1.4em;
-  margin-bottom: 10px;
-}
-
 .number {
   background-color: #5fcf80;
   color: #fff;
@@ -336,12 +280,6 @@ legend {
   text-align: center;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
   border-radius: 100%;
-}
-
-@media screen and (min-width: 480px) {
-  form {
-    max-width: 480px;
-  }
 }
 
 .connection {
@@ -372,64 +310,3 @@ legend {
   text-align: center;
   background-color: #9271e8;
 }
-
-/* .add-repo-container {
-  display: inline-block;
-  position: relative;
-}
-
-.add-repo-btn {
-  padding: 8px 16px;
-
-  font-size: 1.25rem;
-  font-family: 'Poppins', Arial, sans-serif;
-  background-color: white;
-  color: black;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.add-repo-form {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1;
-  padding: 16px;
-  background-color: #f1f1f1;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-}
-
-.add-repo-form input[type='text'] {
-  padding: 8px;
-  margin-right: 8px;
-  border: none;
-  border-radius: 4px;
-}
-
-.add-repo-form button[type='submit'] {
-  padding: 8px 16px;
-  background-color: #4caf50;
-  margin-top: 5px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.add-repo-form button[type='submit']:hover {
-  background-color: #3e8e41;
-}
-
-.add-repo-container:hover .add-repo-form {
-  display: block;
-}
-
-#add-repo-button:focus + #add-repo-form {
-  display: block;
-}
-
-#add-repo-form:focus-within {
-  display: block;
-} */
