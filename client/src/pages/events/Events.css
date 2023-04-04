@@ -1,0 +1,315 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: Poppins, Arial, sans-serif;
+  height: 100vh;
+  font-size: 16px;
+}
+/*MAIN*/
+
+#cf-in-store-events {
+  letter-spacing: 0.045em;
+}
+
+/*ELEMENTS*/
+
+#cf-in-store-events h1 span {
+  font-size: 1.833rem;
+  letter-spacing: 0.0825em;
+  text-align: center;
+}
+
+#cf-in-store-events h1 span:nth-child(2) {
+  color: #4a4a4a;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  margin: 0.5em auto 1.5em;
+}
+
+#cf-in-store-events h2 {
+  color: #4a4a4a;
+  font-size: 1.667em;
+  font-weight: 300;
+  letter-spacing: 0.125em;
+}
+
+#cf-in-store-events h2 span {
+  display: inline-block;
+}
+
+#cf-in-store-events h2 span:nth-child(2) {
+  font-size: 0.813rem;
+  font-weight: normal;
+  letter-spacing: 0.065em;
+}
+
+#cf-in-store-events h3 {
+  font-size: 1.667rem;
+  letter-spacing: 0.065em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#cf-in-store-events span {
+  display: block;
+}
+
+.cf-hero-message p {
+  font-size: 1.167rem;
+  text-align: center;
+}
+
+.cf-content-box .cf-event-address-time {
+  color: #f5102c;
+  font-size: 1.167rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.cf-content-box .cf-event-topic {
+  font-size: 1.417rem;
+  font-weight: bold;
+  letter-spacing: 0.065em;
+}
+
+.cf-content-box p {
+  line-height: 1.8em;
+}
+
+.cf-content-box .cf-events-time-loc {
+  font-weight: bold;
+  margin-bottom: 1em;
+  text-transform: uppercase;
+}
+
+.cf-content-box .cf-break-udnerline {
+  border-bottom: solid 1px #979797;
+  margin: 2em auto;
+  max-width: 100%;
+}
+
+.cf-content-box .cf-events-rsvp {
+  line-height: 1.8em;
+  margin-top: 1em;
+}
+
+.cf-content-box .cf-events-rsvp.btn {
+  border: 2px solid #000000;
+  margin: 2em auto;
+  width: 100%;
+}
+
+.cf-content-box .cf-events-rsvp span:first-child {
+  font-weight: bold;
+}
+
+/*CONTAINERS*/
+
+.cf-store-events-hero-wrap,
+.cf-img-box {
+  align-items: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+}
+
+.cf-store-events-hero-wrap {
+  background: #ffffff
+    URL('https://www.cityfurniture.com/media/wysiwyg/landers/store-events/store-events-hero.jpg')
+    no-repeat center top scroll;
+  min-height: 25rem;
+}
+
+.cf-hero-message,
+.cf-img-box-inside {
+  background: #ffffff;
+  margin: 0 auto;
+  padding: 2em;
+}
+
+.cf-hero-message {
+  max-width: 900px;
+  padding: 2em;
+}
+
+.cf-img-box {
+  min-height: 180px;
+  margin-top: 0.75em;
+}
+
+.cf-img-box.event-1 {
+  background: #fafafa
+    URL('https://www.cityfurniture.com/media/wysiwyg/landers/store-events/event-1.jpg') no-repeat
+    center top scroll;
+}
+
+.cf-img-box.event-2 {
+  background: #fafafa
+    URL('https://www.cityfurniture.com/media/wysiwyg/landers/store-events/event-2.jpg') no-repeat
+    center top scroll;
+}
+
+.cf-img-box-inside {
+  max-width: 80%;
+}
+
+.cf-content-box {
+  background: #fafafa;
+  padding: 2em;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: Poppins, Arial, sans-serif;
+  height: 100vh;
+  font-size: 16px;
+}
+
+#events-list {
+  background-color: #ffffff;
+  padding: 10px 0;
+}
+
+#events-list h2 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.event-col {
+  width: calc(100% / 3);
+  padding: 15px;
+}
+
+.event-card {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  margin-bottom: 30px;
+  height: 100%;
+}
+
+.event-card h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.event-card p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.filters label {
+  margin-right: 10px;
+}
+.connection.filter-btn {
+  margin: 0 auto;
+}
+
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+input[type='password'],
+input[type='date'],
+input[type='datetime'],
+input[type='email'],
+input[type='number'],
+input[type='tel'],
+input[type='time'],
+input[type='url'],
+textarea,
+.text {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  font-size: 16px;
+  height: auto;
+  margin: 0;
+  outline: 0;
+  padding: 15px;
+  width: 100%;
+  background-color: #e8eeef;
+  color: #8a97a0;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+  margin-bottom: 30px;
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  margin: 0 4px 8px 0;
+}
+
+.number {
+  background-color: #5fcf80;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  font-size: 0.8em;
+  margin-right: 4px;
+  line-height: 30px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 100%;
+}
+
+.connection {
+  width: 11.25rem;
+  height: auto;
+  padding: 0.625rem 0;
+  border: none;
+  border-radius: 0.25rem;
+  outline: none;
+  background: linear-gradient(84.12deg, #522fcf -24.93%, #9271e8 139.25%);
+  color: white;
+  font-size: 1.125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.connection:hover {
+  background: linear-gradient(84.12deg, #9271e8 139.25%, #522fcf -24.93%);
+}
+
+.connection::placeholder {
+  color: white;
+}
+
+.connection .value {
+  text-align: center;
+  background-color: #9271e8;
+}
