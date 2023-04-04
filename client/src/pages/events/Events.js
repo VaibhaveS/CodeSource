@@ -9,6 +9,7 @@ const Events = () => {
 
   useEffect(() => {
     outsideModalRef.current.addEventListener('click', handleOutsideClick, true);
+    fetchEvents();
     return () => {
       if (outsideModalRef.current) {
         outsideModalRef.current.removeEventListener('click', handleOutsideClick, true);
