@@ -7,6 +7,7 @@ import Events from './pages/events/Events';
 import Explore from './pages/explore/Explore';
 import MyAccount from './pages/myAccount/MyAccount';
 import Footer from './Components/footer/Footer';
+import MyRepository from './pages/repository/Repository';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,6 +46,7 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/myAccount" element={<MyAccount />} />
+          <Route path="/repository" element={<MyRepository />} />
         </Routes>
       </Router>
       <Footer />

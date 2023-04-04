@@ -7,16 +7,14 @@ const ChatWindow = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    // Create a new Socket.IO client instance and connect to the server
     const newSocket = io('http://localhost:3000', { transports: ['websocket'] });
     setSocket(newSocket);
 
-    // Listen for incoming messages from the server
-    newSocket.on('message', (data) => {
+    newSocket.on('response', (data) => {
+      console.log('from server', data);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 
-    // Disconnect the socket when the component unmounts
     return () => {
       newSocket.disconnect();
     };
