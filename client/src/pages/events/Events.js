@@ -9,17 +9,9 @@ const Events = () => {
 
   useEffect(() => {
     outsideModalRef.current.addEventListener('click', handleOutsideClick, true);
-    document.getElementById('event-type-filter').addEventListener('change', handleFilterChange);
-    fetchEvents();
-
     return () => {
       if (outsideModalRef.current) {
         outsideModalRef.current.removeEventListener('click', handleOutsideClick, true);
-      }
-      if (document.getElementById('event.type-filter')) {
-        document
-          .getElementById('event-type-filter')
-          .removeEventListener('change', handleFilterChange);
       }
     };
   }, []);
@@ -39,11 +31,6 @@ const Events = () => {
   const closeModal = () => {
     var modal = document.getElementById('myModal');
     modal.style.display = 'none';
-  };
-
-  const handleFilterChange = (e) => {
-    var selectedType = e.target.value.toLowerCase();
-    //Not handling virtual and on-site events as of now
   };
 
   const fetchEvents = async () => {
@@ -86,28 +73,9 @@ const Events = () => {
                 {/* <!--bes-row ends--> */}
                 <div className="filters">
                   {/* <!-- <button onclick="openModal()" id = "fourth" className="fourth">Add Event</button> --> */}
-                  <button type="button" className="connection" onClick={openModal}>
+                  <button type="button" className="connection filter-btn" onClick={openModal}>
                     Add event
                   </button>
-                  <label>&nbsp;&nbsp;Filter by Event Type:</label>
-                  <select id="event-type-filter" className="connection">
-                    <option value="all" className="value">
-                      All
-                    </option>
-                    <option value="virtual" className="value">
-                      Virtual
-                    </option>
-                    <option value="onsite" className="value">
-                      On-site
-                    </option>
-                  </select>
-                  <label>&nbsp;&nbsp;Search by Name:</label>
-                  <input
-                    type="text"
-                    id="event-search"
-                    placeholder="  Enter event name..."
-                    className="connection"
-                  />
                 </div>
               </div>
               {/* <!--container ends--> */}
