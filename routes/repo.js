@@ -139,4 +139,10 @@ router.get('/repos', async function (req, res) {
   return res.status(200).send(repoDetails);
 });
 
+router.get('/repo', async function (req, res) {
+  let repo = await Repo.findByKey(req.body.username + '#' + req.body.repoName);
+  if (!repo) return res.status(404).send("repository doesn't exist");
+  return res.status(200).send(repo.meta);
+});
+
 module.exports = router;
