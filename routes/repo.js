@@ -88,30 +88,25 @@ async function getDirectoryTree(req) {
       }
       currentDict.files.push(pathArray[pathArray.length - 1]);
     }
-    let Id = 0;
-    for (let component in dirTreeNested) {
-      dirTreeNested[component]['directoryId'] = Id;
-      Id += 1;
-      if (component == 'files') {
-        var newFiles = [];
-        for (let i = 0; i < dirTreeNested[component].length; i++) {
-          newFiles.push({ fileId: Id, fileName: dirTreeNested[component][i] });
-          Id += 1;
-        }
-        dirTreeNested[component] = newFiles;
-      } else {
-        for (let subComp in dirTreeNested[component]) {
-          if (subComp == 'files') {
-            var newFiles = [];
-            for (let i = 0; i < dirTreeNested[component][subComp].length; i++) {
-              newFiles.push({ fileId: Id, fileName: dirTreeNested[component][subComp][i] });
-              Id += 1;
-            }
-            dirTreeNested[component][subComp] = newFiles;
-          }
+    function assignIdsRecursively(node, id) {
+      node.directoryId = id++;
+      if (node.files) {
+        for (let i = 0; i < node.files.length; i++) {
+          const name = node.files[i];
+          node.files[i] = {
+            fileId: id++,
+            filename: name,
+          };
         }
       }
+      for (let key in node) {
+        if (typeof node[key] === 'object' && key !== 'files') {
+          id = assignIdsRecursively(node[key], id);
+        }
+      }
+      return id;
     }
+    assignIdsRecursively(dirTreeNested, 0);
     return [dirTreeNested, body];
   }
 }
@@ -139,10 +134,13 @@ router.get('/repos', async function (req, res) {
   return res.status(200).send(repoDetails);
 });
 
-router.get('/repo', async function (req, res) {
-  let repo = await Repo.findByKey(req.body.username + '#' + req.body.repoName);
+router.get('/:username/:reponame', async function (req, res) {
+  const username = req.params.username;
+  const reponame = req.params.reponame;
+
+  let repo = await Repo.findByKey(`${username}#${reponame}`);
   if (!repo) return res.status(404).send("repository doesn't exist");
-  return res.status(200).send(repo.meta);
+  return res.status(200).send(repo);
 });
 
 module.exports = router;
