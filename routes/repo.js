@@ -130,4 +130,13 @@ router.post('/directoryTree', async function (req, res) {
   return res.status(200).send(repo.details.dirTree);
 });
 
+router.get('/repos', async function (req, res) {
+  let repos = await Repo.findAll();
+  let repoDetails = [];
+  for (repo of repos) {
+    repoDetails.push(repo.meta);
+  }
+  return res.status(200).send(repoDetails);
+});
+
 module.exports = router;
