@@ -7,6 +7,8 @@ import Events from './pages/events/Events';
 import Explore from './pages/explore/Explore';
 import MyAccount from './pages/myAccount/MyAccount';
 import Footer from './Components/footer/Footer';
+import Repository from './pages/repositoryPage/Repository';
+import RepoList from './pages/repoList/RepoList';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,6 +47,8 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/myAccount" element={<MyAccount />} />
+          <Route path="/repository" element={<Repository />} />
+          <Route path="/repoList" element={<RepoList />} />
         </Routes>
       </Router>
       <Footer />
