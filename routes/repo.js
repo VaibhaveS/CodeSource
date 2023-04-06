@@ -129,9 +129,9 @@ async function getDirectoryTree(req) {
 }
 
 router.post('/directoryTree', async function (req, res) {
-  let repo = await Repo.findByKey(req.user.userId + '#' + req.body.repoName);
+  let repo = await Repo.findByKey(req.user.details.username + '#' + req.body.repoName);
   if (!repo) {
-    repo = new Repo(req.user.userId, req.body.repoName);
+    repo = new Repo(req.user.details.username, req.body.repoName);
     repo.details = {
       dirTree: await getDirectoryTree(req),
     };

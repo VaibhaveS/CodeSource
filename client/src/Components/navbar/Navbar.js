@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Navbar.css';
 
-function Navbar({ user }) {
+function Navbar({ user, page }) {
   const [showAddRepoForm, setShowAddRepoForm] = useState(false);
   const [response, setResponse] = useState(null);
   const handleAddRepoFormToggle = () => setShowAddRepoForm(!showAddRepoForm);
@@ -36,31 +36,13 @@ function Navbar({ user }) {
           <li>
             <Link to="/events">Events</Link>
           </li>
-          <li>
-            <Link to="/explore">Explore</Link>
-          </li>
           {user && (
             <>
               <li>
                 <Link to="/myAccount">My account</Link>
               </li>
-              <li className="add-repo-container">
-                <button type="button" className="add-repo-btn" onClick={handleAddRepoFormToggle}>
-                  Add repository
-                </button>
-                {showAddRepoForm && (
-                  <div className="add-repo-form">
-                    <form onSubmit={handleSubmit}>
-                      <input
-                        type="text"
-                        placeholder="Repository Name"
-                        id="repoName"
-                        name="repoName"
-                      />
-                      <button type="submit">Submit</button>
-                    </form>
-                  </div>
-                )}
+              <li>
+                <Link to="/Repository">Repository</Link>
               </li>
             </>
           )}
