@@ -112,20 +112,37 @@ async function getDirectoryTree(req) {
         }
       }
     }
-    return res.status(200).send(dirTreeNested);
+    return [dirTreeNested, body];
   }
 }
 
 router.post('/directoryTree', async function (req, res) {
-  let repo = await Repo.findByKey(req.user.userId + '#' + req.body.repoName);
+  let repo = await Repo.findByKey(req.user.details.username + '#' + req.body.repoName);
   if (!repo) {
-    repo = new Repo(req.user.userId, req.body.repoName);
+    repo = new Repo(req.user.details.username, req.body.repoName);
+    const response = await getDirectoryTree(req);
     repo.details = {
-      dirTree: await getDirectoryTree(req),
+      dirTree: response[0],
     };
+    repo.meta = response[1];
     await repo.save();
   }
   return res.status(200).send(repo.details.dirTree);
+});
+
+router.get('/repos', async function (req, res) {
+  let repos = await Repo.findAll();
+  let repoDetails = [];
+  for (repo of repos) {
+    repoDetails.push(repo.meta);
+  }
+  return res.status(200).send(repoDetails);
+});
+
+router.get('/repo', async function (req, res) {
+  let repo = await Repo.findByKey(req.body.username + '#' + req.body.repoName);
+  if (!repo) return res.status(404).send("repository doesn't exist");
+  return res.status(200).send(repo.meta);
 });
 
 module.exports = router;

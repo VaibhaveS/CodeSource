@@ -3,8 +3,9 @@ const { getDb } = require('../util/database');
 const mongoConnect = require('../util/database').getDb;
 
 class Repo {
-  constructor(userId, repoName, details) {
-    this.key = userId + '#' + repoName;
+  constructor(userName, repoName, details) {
+    this.name = repoName;
+    this.key = userName + '#' + repoName;
     this.details = details;
   }
 
