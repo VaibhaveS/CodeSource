@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 const Repository = () => {
   const { username, repositoryname } = useParams();
   const [repository, setRepository] = useState(null);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     const getResponse = async () => {
@@ -27,8 +28,16 @@ const Repository = () => {
       </h1>
       <RepoNavbar />
       <div>
-        <TextEditor />
-        {repository && <DirectoryTree tree={repository.details.dirTree} />}
+        {repository && (
+          <>
+            <TextEditor repo={repository} selected={selected} />
+            <DirectoryTree
+              tree={repository.details.dirTree}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          </>
+        )}
       </div>
     </div>
   );

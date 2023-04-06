@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './DirectoryTree.css';
 
-const DirectoryTree = ({ tree }) => {
+const DirectoryTree = ({ tree, selected, setSelected }) => {
   const [expanded, setExpanded] = useState({});
   useEffect(() => {
     setExpanded({
@@ -20,7 +20,18 @@ const DirectoryTree = ({ tree }) => {
     return (
       expanded[node.directoryId] && (
         <ul>
-          {node.files && node.files.map((file) => <li key={file.fileId}>{file.filename}</li>)}
+          {node.files &&
+            node.files.map((file) => (
+              <li
+                key={file.fileId}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setSelected(file.fileId);
+                }}
+              >
+                {file.filename}
+              </li>
+            ))}
           {Object.entries(node)
             .filter(([key]) => key !== 'files')
             .map(
@@ -32,6 +43,7 @@ const DirectoryTree = ({ tree }) => {
                     onClick={(event) => {
                       event.stopPropagation();
                       toggleExpanded(value.directoryId);
+                      setSelected(value.directoryId);
                     }}
                   >
                     {key}

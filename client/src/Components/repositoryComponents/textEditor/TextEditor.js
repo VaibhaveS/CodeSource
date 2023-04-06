@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const TextEditor = () => {
+const TextEditor = ({ repo, selected }) => {
+  useEffect(() => {}, [selected]);
   return (
     <div>
       <h1>Text Editor</h1>
