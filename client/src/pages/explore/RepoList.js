@@ -28,6 +28,12 @@ const RepoList = () => {
     setPage(page - 1);
   };
 
+  const randomColor = () => {
+    return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(
+      Math.random() * 256
+    )}, ${Math.floor(Math.random() * 256)})`;
+  };
+
   return (
     <div>
       {repositories && (
@@ -50,7 +56,7 @@ const RepoList = () => {
 
                       <p className="repo-description">{event.description}</p>
                       <div>
-                        <FaCircle style={{ color: '#b76c98' }} /> {event.topics[0]}{' '}
+                        <FaCircle style={{ color: randomColor() }} /> {event.topics[0]}{' '}
                         &nbsp;&nbsp;&nbsp; <FaStar /> {event.stargazers_count} &nbsp;&nbsp;&nbsp;{' '}
                         <FaCodeBranch /> {event.forks}
                       </div>
