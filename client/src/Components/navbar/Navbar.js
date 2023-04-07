@@ -43,23 +43,8 @@ function Navbar({ user }) {
               <li>
                 <Link to="/myAccount">My account</Link>
               </li>
-              <li className="add-repo-container">
-                <button type="button" className="add-repo-btn" onClick={handleAddRepoFormToggle}>
-                  Add repository
-                </button>
-                {showAddRepoForm && (
-                  <div className="add-repo-form">
-                    <form onSubmit={handleSubmit}>
-                      <input
-                        type="text"
-                        placeholder="Repository Name"
-                        id="repoName"
-                        name="repoName"
-                      />
-                      <button type="submit">Submit</button>
-                    </form>
-                  </div>
-                )}
+              <li>
+                <Link to="/addRepos">Add repos</Link>
               </li>
             </>
           )}

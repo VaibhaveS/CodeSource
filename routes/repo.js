@@ -144,4 +144,20 @@ router.get('/:username/:reponame', async function (req, res) {
   return res.status(200).send(repo);
 });
 
+router.get('/github-repos', async function (req, res) {
+  const accessToken = await getAccessToken(req.user.userId);
+  const response = JSON.parse(
+    await httpGet('/users/' + req.user.details.username + '/' + 'repos', accessToken)
+  );
+  if (!response) return res.status(404).send("repository doesn't exist");
+  for (repos of response) {
+    const repo = await Repo.findByKey(req.user.details.username + '#' + repos.name);
+    repos.is_codesource = false;
+    if (repo) {
+      repos.is_codesource = true;
+    }
+  }
+  return res.status(200).send(response);
+});
+
 module.exports = router;
