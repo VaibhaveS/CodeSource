@@ -26,11 +26,14 @@ class Repo {
       });
   }
 
-  static findAll() {
+  static findAll(page, perPage) {
     const db = getDb();
+    const skips = perPage * (page - 1);
     return db
       .collection('repos')
       .find()
+      .skip(skips)
+      .limit(perPage)
       .toArray()
       .then((repos) => {
         console.log('returning', repos);

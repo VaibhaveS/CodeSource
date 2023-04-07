@@ -21,7 +21,7 @@ function Navbar({ user }) {
     console.log(responseData);
     setResponse(responseData);
     // history.push("/repository", { response: responseData });
-    navigate('/repository');
+    navigate(`${user.details.username}/${repoName}/repository`);
   };
 
   return (
@@ -33,9 +33,6 @@ function Navbar({ user }) {
       <div className="navbar-links">
         <ul>
           <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
             <Link to="/events">Events</Link>
           </li>
           <li>
@@ -46,23 +43,8 @@ function Navbar({ user }) {
               <li>
                 <Link to="/myAccount">My account</Link>
               </li>
-              <li className="add-repo-container">
-                <button type="button" className="add-repo-btn" onClick={handleAddRepoFormToggle}>
-                  Add repository
-                </button>
-                {showAddRepoForm && (
-                  <div className="add-repo-form">
-                    <form onSubmit={handleSubmit}>
-                      <input
-                        type="text"
-                        placeholder="Repository Name"
-                        id="repoName"
-                        name="repoName"
-                      />
-                      <button type="submit">Submit</button>
-                    </form>
-                  </div>
-                )}
+              <li>
+                <Link to="/addRepos">Add repos</Link>
               </li>
             </>
           )}
