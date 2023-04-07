@@ -27,15 +27,19 @@ const Repository = () => {
         This is the Repo page {username}/{repositoryname}
       </h1>
       <RepoNavbar />
-      <div>
+      <div style={{ display: 'flex' }}>
         {repository && (
           <>
-            <TextEditor repo={repository} selected={selected} />
-            <DirectoryTree
-              tree={repository.details.dirTree}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            <div style={{ flex: 1 }}>
+              <TextEditor repo={repository} selected={selected} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <DirectoryTree
+                tree={repository.details.dirTree}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            </div>
           </>
         )}
       </div>

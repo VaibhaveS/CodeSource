@@ -1,0 +1,23 @@
+.repo-anchor {
+  color: #0969da;
+  text-decoration: none;
+  font-weight: var(--base-text-weight-semibold, 600);
+}
+
+.repo-anchor:hover {
+  text-decoration: underline;
+}
+
+.repo-card {
+  height: 170px;
+}
+
+.repo-description {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  white-space: normal;
+}

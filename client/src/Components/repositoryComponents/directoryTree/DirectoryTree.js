@@ -3,14 +3,7 @@ import './DirectoryTree.css';
 
 const DirectoryTree = ({ tree, selected, setSelected }) => {
   const [expanded, setExpanded] = useState({});
-  useEffect(() => {
-    setExpanded({
-      ...expanded,
-      [0]: 1,
-    });
-  }, []);
   const toggleExpanded = (directoryId) => {
-    console.log(directoryId);
     setExpanded({
       ...expanded,
       [directoryId]: !expanded[directoryId],
@@ -18,7 +11,7 @@ const DirectoryTree = ({ tree, selected, setSelected }) => {
   };
   const renderTree = (node) => {
     return (
-      expanded[node.directoryId] && (
+      !expanded[node.directoryId] && (
         <ul>
           {node.files &&
             node.files.map((file) => (
@@ -58,7 +51,7 @@ const DirectoryTree = ({ tree, selected, setSelected }) => {
 
   return (
     <div>
-      <h2>Collapsible Directory List</h2>
+      <h2 style={{ textAlign: 'center' }}>Collapsible Directory List</h2>
       <div className="box">
         <ul className="directory-list">{renderTree(tree)}</ul>
       </div>

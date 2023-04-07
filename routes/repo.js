@@ -126,11 +126,12 @@ router.post('/directoryTree', async function (req, res) {
 });
 
 router.get('/repos', async function (req, res) {
-  let repos = await Repo.findAll();
-  let repoDetails = [];
-  for (repo of repos) {
-    repoDetails.push(repo.meta);
-  }
+  const page = parseInt(req.query.page) || 1;
+  const perPage = 10;
+
+  const repos = await Repo.findAll(page, perPage);
+  const repoDetails = repos.map((repo) => repo.meta);
+
   return res.status(200).send(repoDetails);
 });
 

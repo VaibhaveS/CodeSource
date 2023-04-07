@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Homepage from './pages/homepage/Homepage';
 import Events from './pages/events/Events';
-import Explore from './pages/explore/Explore';
 import MyAccount from './pages/myAccount/MyAccount';
 import Footer from './Components/footer/Footer';
 import Repository from './pages/repositoryPage/Repository';
-import RepoList from './pages/repoList/RepoList';
+import RepoList from './pages/explore/RepoList';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,10 +44,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/explore" element={<Explore />} />
+          <Route path="/explore" element={<RepoList />} />
           <Route path="/myAccount" element={<MyAccount />} />
           <Route path=":username/:repositoryname/repository" element={<Repository />} />
-          <Route path="/repoList" element={<RepoList />} />
         </Routes>
       </Router>
       <Footer />
