@@ -21,7 +21,7 @@ function Navbar({ user }) {
     console.log(responseData);
     setResponse(responseData);
     // history.push("/repository", { response: responseData });
-    navigate('/repository');
+    navigate(`${user.details.username}/${repoName}/repository`);
   };
 
   return (
