@@ -1,7 +1,7 @@
 var express = require('express');
 var passport = require('passport');
 const ejs = require('ejs');
-var session = require('express-session');
+var session = require('cookie-session');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var partials = require('express-partials');
@@ -35,10 +35,21 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(function (request, response, next) {
+  if (request.session && !request.session.regenerate) {
+    request.session.regenerate = (cb) => {
+      cb();
+    };
+  }
+  if (request.session && !request.session.save) {
+    request.session.save = (cb) => {
+      cb();
+    };
+  }
+  next();
+});
 app.use('/auth', authRoute);
 app.use('/repo', repoRoute);
 app.use('/events', eventRoute);
