@@ -11,11 +11,14 @@ const Repository = () => {
 
   useEffect(() => {
     const getResponse = async () => {
-      const response = await fetch(`http://localhost:3000/repo/${username}/${repositoryname}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/repo/${username}/${repositoryname}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        }
+      );
       const repo = await response.json();
       setRepository(repo);
     };

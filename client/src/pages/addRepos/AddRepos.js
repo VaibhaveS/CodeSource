@@ -7,7 +7,7 @@ const RepoList = () => {
 
   useEffect(() => {
     const getResponse = async () => {
-      const response = await fetch(`http://localhost:3000/repo/github-repos`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/repo/github-repos`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -35,9 +35,9 @@ const RepoList = () => {
 
   const handleClick = async (event) => {
     if (event.is_codesource) {
-      window.location.href = `http://localhost:3006/${event.owner.login}/${event.name}/repository`;
+      window.location.href = `${process.env.REACT_APP_CLIENT_URL}/${event.owner.login}/${event.name}/repository`;
     } else {
-      const response = await fetch('http://localhost:3000/repo/directoryTree', {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/repo/directoryTree`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ repoName: event.name, username: event.owner.login }),
@@ -45,7 +45,7 @@ const RepoList = () => {
       });
       const responseData = await response.json();
       if (responseData) {
-        window.location.href = `http://localhost:3006/${event.owner.login}/${event.name}/repository`;
+        window.location.href = `${process.env.REACT_APP_CLIENT_URL}/${event.owner.login}/${event.name}/repository`;
       }
     }
   };
