@@ -36,7 +36,7 @@ const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('http://localhost:3000/events/events', {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/events/events`, {
         method: 'GET',
       });
       if (!response.ok) {

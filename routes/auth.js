@@ -29,7 +29,7 @@ passport.use(
     {
       clientID: GITHUB_CLIENT_ID,
       clientSecret: GITHUB_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/auth/github/callback',
+      callbackURL: `${process.env.SERVER_URL}/auth/github/callback`,
     },
     function (accessToken, refreshToken, profile, done) {
       console.log(accessToken, refreshToken);
@@ -98,7 +98,7 @@ router.get(
 //   which, in this example, will redirect the user to the home page.
 router.get(
   '/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/' }),
   function (req, res) {
     console.log(req.user);
     res.redirect(CLIENT_URL);
