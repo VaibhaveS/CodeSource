@@ -47,6 +47,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.get('/', (req, res) => {
+  res.redirect(CLIENT_URL);
+});
 app.use('/auth', authRoute);
 app.use('/repo', repoRoute);
 app.use('/events', eventRoute);
