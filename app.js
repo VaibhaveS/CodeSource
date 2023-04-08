@@ -1,7 +1,8 @@
 var express = require('express');
 var passport = require('passport');
 const ejs = require('ejs');
-var session = require('cookie-session');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var partials = require('express-partials');
@@ -34,22 +35,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongoUrl: process.env.MONGO_CONNECT_URL,
+    }),
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function (request, response, next) {
-  if (request.session && !request.session.regenerate) {
-    request.session.regenerate = (cb) => {
-      cb();
-    };
-  }
-  if (request.session && !request.session.save) {
-    request.session.save = (cb) => {
-      cb();
-    };
-  }
-  next();
-});
 app.use('/auth', authRoute);
 app.use('/repo', repoRoute);
 app.use('/events', eventRoute);

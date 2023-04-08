@@ -98,7 +98,7 @@ router.get(
 //   which, in this example, will redirect the user to the home page.
 router.get(
   '/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/' }),
   function (req, res) {
     console.log(req.user);
     res.redirect(CLIENT_URL);
