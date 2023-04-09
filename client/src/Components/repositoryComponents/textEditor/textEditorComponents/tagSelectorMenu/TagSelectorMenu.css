@@ -1,0 +1,50 @@
+.tagSelectorMenuWrapper {
+  position: absolute;
+  width: 6.875rem;
+  height: 9rem;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+}
+
+.tagSelectorMenu {
+  background: white;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px,
+    rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  border-radius: 0.5rem;
+}
+
+.tagSelectorItem {
+  font-family: 'Nunito Sans', Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ededed;
+}
+
+.tagSelectorItem:last-of-type {
+  border-bottom: none;
+}
+
+.tagSelectorItem:hover,
+.tagSelectorItem:focus {
+  background: #f5f6fb;
+  cursor: pointer;
+}
+
+.tagSelectorItem:first-of-type:hover,
+.tagSelectorItem:first-of-type:focus {
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+}
+
+.tagSelectorItem:last-of-type:hover,
+.tagSelectorItem:last-of-type:focus {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.selectedTag {
+  background: #f5f6fb;
+  border-radius: 0.5rem;
+}

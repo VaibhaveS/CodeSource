@@ -1,0 +1,74 @@
+.block {
+  padding: 0.25rem;
+  /* Better support for safari */
+  -webkit-user-select: text;
+  user-select: text;
+  border: 1px solid #cccccc;
+  margin-bottom: 0;
+  border-radius: 0.5rem;
+  font-family: Roboto, Arial, sans-serif;
+}
+
+.block:focus,
+.isDragging,
+.blockSelected {
+  background: #f5f6fb;
+  outline-color: #f5f6fb;
+}
+
+.blockSelected ~ .dragHandle {
+  opacity: 1;
+}
+
+.placeholder {
+  color: rgba(72, 72, 72, 0.25);
+}
+
+.draggable .block {
+  display: inline-block;
+  width: calc(100% - 2rem);
+}
+
+.draggable:hover .block {
+  background: #fafafa;
+  outline-color: #f5f6fb;
+}
+
+.draggable:hover .dragHandle {
+  opacity: 1;
+}
+
+.dragHandle {
+  opacity: 0;
+  display: inline-block;
+  width: 1rem;
+}
+.dragHandle img {
+  display: block;
+  margin: auto;
+}
+
+.image {
+  display: inline-block;
+  width: calc(100% - 2rem);
+  padding: 0.25rem;
+}
+
+.image img {
+  display: block;
+  max-height: 600px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.blockSelected.image {
+  opacity: 0.75;
+}
+
+.fileInputLabel {
+  display: block;
+  padding: 0.5rem 0.25rem;
+  color: #888888;
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+}
