@@ -8,7 +8,7 @@ const RepoList = () => {
 
   useEffect(() => {
     const getResponse = async () => {
-      const response = await fetch(`http://localhost:3000/repo/repos?page=${page}`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/repo/repos?page=${page}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -47,7 +47,7 @@ const RepoList = () => {
                       <div className="event-header">
                         <FaBook className="icon" /> &nbsp;
                         <a
-                          href={`http://localhost:3006/${event.owner.login}/${event.name}/repository`}
+                          href={`${process.env.REACT_APP_CLIENT_URL}/${event.owner.login}/${event.name}/repository`}
                           className="repo-anchor"
                         >
                           {event.full_name}

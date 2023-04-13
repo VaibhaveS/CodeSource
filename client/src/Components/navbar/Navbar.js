@@ -11,7 +11,7 @@ function Navbar({ user }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const repoName = document.getElementById('repoName').value;
-    const response = await fetch('http://localhost:3000/repo/directoryTree', {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/repo/directoryTree`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ repoName, user }),
@@ -55,7 +55,7 @@ function Navbar({ user }) {
         <button
           type="button"
           className="connection"
-          onClick={() => (window.location.href = 'http://localhost:3000/auth/github')}
+          onClick={() => (window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/github`)}
         >
           Login with Github
         </button>

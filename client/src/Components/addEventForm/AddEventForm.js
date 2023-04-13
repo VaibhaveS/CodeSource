@@ -11,7 +11,7 @@ const AddEventForm = ({ outsideModalRef, modalRef, closeModal, fetchEvents }) =>
 
   const handleForm = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:3000/events/addEvent', {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/events/addEvent`, {
       method: 'POST',
       body: JSON.stringify({
         title: formData.title,
