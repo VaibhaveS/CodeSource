@@ -36,6 +36,8 @@ const RepoList = () => {
 
   return (
     <div>
+      {console.log("Hi")}
+      {console.log(repositories)}
       {repositories && (
         <section id="events-list">
           <div className="event-container" id="event-container">

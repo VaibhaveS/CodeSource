@@ -46,7 +46,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<Events />} />
           <Route path="/explore" element={<RepoList />} />
-          <Route path="/myAccount" element={<MyAccount />} />
+          <Route path="/myAccount" element={<MyAccount user={user}/>} />
           <Route path="/addRepos" element={<AddRepos />} />
           <Route path=":username/:repositoryname/repository" element={<Repository />} />
         </Routes>

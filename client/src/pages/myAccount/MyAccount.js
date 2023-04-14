@@ -1,9 +1,14 @@
 import React from 'react';
+import AccountDetails from '../../Components/myAccountComponents/AccountDetails';
+import RepoList from '../../Components/myAccountComponents/RepoList';
 
-const MyAccount = () => {
+const MyAccount = ({user}) => {
   return (
     <div>
-      <h1>My Account Page</h1>
+      <div className="container">
+        {user && <AccountDetails user={user}/>}
+        {user && <RepoList user={user}/> }
+      </div>
     </div>
   );
 };
