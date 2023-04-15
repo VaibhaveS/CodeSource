@@ -14,7 +14,6 @@ const RepoList = () => {
         credentials: 'include',
       });
       const repos = await response.json();
-      //console.log(repos);
       setRepositories(repos);
     };
     getResponse();
@@ -36,41 +35,40 @@ const RepoList = () => {
 
   return (
     <div>
-      {console.log("Hi")}
-      {console.log(repositories)}
       {repositories && (
         <section id="events-list">
           <div className="event-container" id="event-container">
             <div className="row">
               {repositories.map((event) => {
-                if(event!=null)
-                return (
-                  <div className="event-col">
-                    <div className="event-card repo-card" key={event._id}>
-                      <div className="event-header">
-                        <FaBook className="icon" /> &nbsp;
-                        <a
-                          href={`${process.env.REACT_APP_CLIENT_URL}/${event.owner.login}/${event.name}/repository`}
-                          className="repo-anchor"
-                        >
-                          {event.full_name}
-                        </a>
-                      </div>
+                if (event != null)
+                  //TODO: check repositories[0] == null
+                  return (
+                    <div className="event-col">
+                      <div className="event-card repo-card" key={event._id}>
+                        <div className="event-header">
+                          <FaBook className="icon" /> &nbsp;
+                          <a
+                            href={`${process.env.REACT_APP_CLIENT_URL}/${event.owner.login}/${event.name}/repository`}
+                            className="repo-anchor"
+                          >
+                            {event.full_name}
+                          </a>
+                        </div>
 
-                      <p className="repo-description">{event.description}</p>
-                      <div>
-                        {event.topics && (
-                          <>
-                            <FaCircle style={{ color: randomColor() }} /> {event.topics[0]}{' '}
-                            &nbsp;&nbsp;&nbsp;
-                          </>
-                        )}{' '}
-                        <FaStar /> {event.stargazers_count} &nbsp;&nbsp;&nbsp; <FaCodeBranch />{' '}
-                        {event.forks}
+                        <p className="repo-description">{event.description}</p>
+                        <div>
+                          {event.topics && (
+                            <>
+                              <FaCircle style={{ color: randomColor() }} /> {event.topics[0]}{' '}
+                              &nbsp;&nbsp;&nbsp;
+                            </>
+                          )}{' '}
+                          <FaStar /> {event.stargazers_count} &nbsp;&nbsp;&nbsp; <FaCodeBranch />{' '}
+                          {event.forks}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
+                  );
               })}
             </div>
             <div className="pagination">

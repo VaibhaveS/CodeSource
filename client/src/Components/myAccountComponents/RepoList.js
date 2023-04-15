@@ -13,7 +13,6 @@ const RepoList = () => {
         credentials: 'include',
       });
       const repos = await response.json();
-      //console.log(repos);
       setRepositories(repos);
     };
     getResponse();
@@ -39,8 +38,9 @@ const RepoList = () => {
         <section id="repos-list">
           <div className="repos-container">
             <div className="row">
-              {repositories.map((event) => {              
-                if(event!=null)
+              {repositories.map((event) => {
+                if (event != null)
+                  //TODO: check repositories[0] == null
                   return (
                     <div className="repo-col">
                       <div className="repo-card" key={event._id}>
