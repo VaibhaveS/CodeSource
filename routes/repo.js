@@ -80,7 +80,7 @@ async function getDirectoryTree(req) {
     );
     const url = bodyTwo[0].commit.tree.sha;
     const dirTree = await parseTree(req.body.repoName, url, req.user.details.username, accessToken);
-    const data = new Data(req.user.userId, req.body.repoName, dirTree);
+    const data = new Data(req.user.details.username, req.body.repoName, dirTree);
     await data.save();
     let dirTreeNested = {};
     for (const filePath in dirTree) {

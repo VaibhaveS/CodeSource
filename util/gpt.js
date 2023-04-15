@@ -19,8 +19,39 @@ function getImpContent(file, contentBase64) {
   );
 }
 
+function getContent(file, contentBase64) {
+  let decodedContent = Buffer.from(contentBase64, 'base64').toString(); // Decode Base64 contents
+
+  let lines = decodedContent.split('\n');
+  if (lines.length < 5000) {
+    return '\nfile name: ' + file + '\ngist of the file: ' + lines;
+  }
+
+  let first1500 = lines.slice(0, 1500).join('\n');
+  let middle1500Start = Math.floor(lines.length / 2) - 750;
+  let middle1500End = middle1500Start + 1500;
+  let middle1500 = lines.slice(middle1500Start, middle1500End).join('\n');
+  let last1500 = lines.slice(-1500).join('\n');
+
+  return (
+    '\nfile name: ' +
+    file +
+    '\ngist of the file: ' +
+    first1500 +
+    '...' +
+    middle1500 +
+    '...' +
+    last1500
+  );
+}
+
 async function promptFrom(message) {
-  const data = await Data.findByKey('56480355#whatTODO');
+  const arr = message.split('.@.@.');
+  let context = arr[2];
+  if (context == arr[1].split('#')[1]) {
+    context = null;
+  }
+  const data = await Data.findByKey(arr[1]);
   if (data) {
     const tree = data.data;
     let i = 0;
@@ -33,30 +64,28 @@ async function promptFrom(message) {
         file.includes('mvnw')
       )
         continue;
-      prompt += getImpContent(file, tree[file].content);
-      console.log(getImpContent(file, tree[file].content));
+      if (context && !file.includes(context)) continue; //context set to particular file
+      if (context) prompt += getContent(file, tree[file].content);
+      else prompt += getImpContent(file, tree[file].content);
       i += 1;
       if (prompt.length > 5000) break;
     }
-    prompt +=
-      '\nbased on the above codebase details, please answer the query. I want the answer only in simple text no highlighting/code/backticks -\n';
-    prompt += message;
-    console.log(prompt);
+    prompt += '\nbased on the above codebase details, please answer the query - \n';
+    prompt += arr[0];
+    console.log('PROMPT:', prompt);
     return prompt;
   }
 }
 
 async function replyGPT(message) {
-  const { ChatGPTUnofficialProxyAPI } = await import('chatgpt');
+  const { ChatGPTAPI } = await import('chatgpt');
 
-  const api = new ChatGPTUnofficialProxyAPI({
-    accessToken: process.env.OPENAI_ACCESS_TOKEN,
-    apiReverseProxyUrl: 'https://bypass.churchless.tech/api/conversation',
+  const api = new ChatGPTAPI({
+    apiKey: process.env.OPENAI_API_KEY,
   });
+
   const prompt = await promptFrom(message);
   const res = await api.sendMessage(prompt);
-  console.log('waiotinf for response');
-  console.log(res.text);
   return res.text;
 }
 

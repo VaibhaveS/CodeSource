@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import './ChatWindow.css';
+import { FaFacebookMessenger } from 'react-icons/fa';
 
 const ChatWindow = ({ selected, user, reponame }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const [fileName, setFileName] = useState(null);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -26,6 +28,7 @@ const ChatWindow = ({ selected, user, reponame }) => {
       );
       const name = await response.json();
       console.log('lol' + name.name);
+      setFileName(name.name);
       setMessages(['context set to ' + name.name]);
       console.log('s', messages);
     };
@@ -49,8 +52,11 @@ const ChatWindow = ({ selected, user, reponame }) => {
     if (socket) {
       // Send the message to the server
       setMessages((prevMessages) => [...prevMessages, message]);
-      console.log('sending to server', message);
-      socket.emit('message', message);
+      console.log(
+        'sending to server',
+        message + '.@.@.' + user + '#' + reponame + '.@.@.' + fileName
+      );
+      socket.emit('message', message + '.@.@.' + user + '#' + reponame + '.@.@.' + fileName);
       setMessage('');
       event.target.reset();
     }
@@ -58,10 +64,7 @@ const ChatWindow = ({ selected, user, reponame }) => {
 
   return (
     <>
-      <div id="chat-circle" class="btn btn-raised" onClick={toggleChat}>
-        <div id="chat-overlay"></div>
-        <h3 style={{ color: 'black' }}>Open</h3>
-      </div>
+      <FaFacebookMessenger onClick={toggleChat} id="chat-circle" />
 
       <div class="chat-box">
         {isOpen && (
@@ -87,7 +90,7 @@ const ChatWindow = ({ selected, user, reponame }) => {
               </div>
             </div>
             <div class="chat-input">
-              <form onSubmit={handleSubmit}>
+              <form class="chat-form" onSubmit={handleSubmit}>
                 <input
                   type="text"
                   id="chat-input"
