@@ -27,14 +27,11 @@ const ChatWindow = ({ selected, user, reponame }) => {
         }
       );
       const name = await response.json();
-      console.log('lol' + name.name);
       setFileName(name.name);
       setMessages(['context set to ' + name.name]);
-      console.log('s', messages);
     };
     getResponse();
     newSocket.on('response', (data) => {
-      console.log('from server', data);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 

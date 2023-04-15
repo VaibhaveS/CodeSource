@@ -36,7 +36,6 @@ class Repo {
       .limit(perPage)
       .toArray()
       .then((repos) => {
-        console.log('returning', repos);
         return repos;
       })
       .catch((err) => {

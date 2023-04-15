@@ -32,7 +32,6 @@ class Data {
       .find()
       .toArray()
       .then((data) => {
-        console.log('returning', data);
         return data;
       })
       .catch((err) => {

@@ -28,7 +28,6 @@ function App() {
           throw new Error('authentication has been failed!');
         })
         .then((resObject) => {
-          console.log('got object', resObject);
           setUser(resObject.user);
         })
         .catch((err) => {

@@ -150,9 +150,7 @@ router.get('/repos', async function (req, res) {
 });
 
 function getNameById(node, id, name) {
-  console.log(node.directoryId, 'needed', id);
   if (node.directoryId === id) {
-    console.log('found', name);
     return name;
   }
   if (node.files) {
@@ -177,7 +175,6 @@ router.get('/:username/:reponame/name/:id', async function (req, res) {
   const id = parseInt(req.params.id);
   const username = req.params.username;
   const reponame = req.params.reponame;
-  console.log(username, reponame);
   let repo = await Repo.findByKey(`${username}#${reponame}`);
   const name = getNameById(repo.details.dirTree, id, reponame);
   return res.status(200).send({ name });
