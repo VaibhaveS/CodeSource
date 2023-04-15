@@ -4,11 +4,9 @@ import RepoList from '../../Components/myAccountComponents/RepoList';
 
 const MyAccount = ({user}) => {
   return (
-    <div>
-      <div className="container">
+    <div className="container-myAccount">
         {user && <AccountDetails user={user}/>}
-        {user && <RepoList user={user}/> }
-      </div>
+        {user && <RepoList user={user}/> }      
     </div>
   );
 };

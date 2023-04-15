@@ -5,11 +5,11 @@ const Searchbar  = ({repos}) => {
 
     const [repoName,setRepoName]=useState('');
     const [fetchedRepo,setFetchedRepo]=useState(null);
-    // const [repos,setRepos]=useState([
-    //     {'name':'mental health with AI','owner':'Satya'},
-    //     {'name':'Instagram_Backend','owner':'Ram'},
-    //     {'name':'Lord of the Rings','owner':'NV'}
-    // ]);
+    const [repos,setRepos]=useState([
+        {'name':'mental health with AI','owner':'Satya'},
+        {'name':'Instagram_Backend','owner':'Ram'},
+        {'name':'Lord of the Rings','owner':'NV'}
+    ]);
     console.log(repos);
     const accessDB=(query)=>{
         repos.forEach(repo => {

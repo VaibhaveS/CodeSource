@@ -14,7 +14,7 @@ const RepoList = () => {
         credentials: 'include',
       });
       const repos = await response.json();
-      console.log(repos);
+      //console.log(repos);
       setRepositories(repos);
     };
     getResponse();
@@ -43,6 +43,7 @@ const RepoList = () => {
           <div className="event-container" id="event-container">
             <div className="row">
               {repositories.map((event) => {
+                if(event!=null)
                 return (
                   <div className="event-col">
                     <div className="event-card repo-card" key={event._id}>
