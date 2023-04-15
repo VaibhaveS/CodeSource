@@ -28,7 +28,6 @@ function App() {
           throw new Error('authentication has been failed!');
         })
         .then((resObject) => {
-          console.log('got object', resObject);
           setUser(resObject.user);
         })
         .catch((err) => {
@@ -48,7 +47,7 @@ function App() {
           <Route path="/explore" element={<RepoList />} />
           <Route path="/myAccount" element={<MyAccount />} />
           <Route path="/addRepos" element={<AddRepos />} />
-          <Route path=":username/:repositoryname/repository" element={<Repository />} />
+          <Route path=":username/:repositoryname/repository/*" element={<Repository />} />
         </Routes>
       </Router>
       <Footer />

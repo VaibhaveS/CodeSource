@@ -2,6 +2,7 @@ const router = require('express').Router();
 const https = require('https');
 const Token = require('../models/token');
 const Repo = require('../models/repo');
+const Issue = require('../models/issue');
 
 const httpGet = (url, accessToken) => {
   const defaultHeaders = {
@@ -140,6 +141,7 @@ router.get('/:username/:reponame', async function (req, res) {
   const reponame = req.params.reponame;
 
   let repo = await Repo.findByKey(`${username}#${reponame}`);
+  console.log('herer');
   if (!repo) return res.status(404).send("repository doesn't exist");
   return res.status(200).send(repo);
 });
@@ -158,6 +160,70 @@ router.get('/github-repos', async function (req, res) {
     }
   }
   return res.status(200).send(response);
+});
+
+router.get('/:username/:reponame/issues', async function (req, res) {
+  //TODO: retrieve from DB instead of hitting Github API
+  const username = req.params.username;
+  const reponame = req.params.reponame;
+  const accessToken = await getAccessToken('56480355');
+  const response = JSON.parse(
+    await httpGet('/repos/' + username + '/' + reponame + '/issues', accessToken)
+  );
+  console.log(username, reponame, response, 'huh');
+  if (!response) return res.status(404).send("repository doesn't exist");
+  for (let issue of response) {
+    let oldIssue = await Issue.findById(issue.id);
+    if (oldIssue) continue;
+    let newIssue = new Issue(issue.id, issue);
+    newIssue.key = username + '#' + reponame;
+    newIssue.save();
+  }
+  const issues = await Issue.findByKey(username + '#' + reponame);
+  return res.status(200).send(issues);
+});
+
+router.get('/find/issue/:issueId', async function (req, res) {
+  const issueId = req.params.issueId;
+  let issue = await Issue.findById(parseInt(issueId));
+  if (!issue) return res.status(404).send("Issue doesn't exist");
+  return res.status(200).send(issue);
+});
+
+router.post('/issues/:issueId/:username/book', async function (req, res) {
+  const issueId = req.params.issueId;
+  let issue = await Issue.findById(parseInt(issueId));
+  if (!issue) return res.status(404).send("Issue doesn't exist");
+  if (issue.bookedBy) return res.status(404).send('already booked');
+  issue.bookedBy = {
+    name: req.params.username,
+    time: new Date(),
+  };
+  console.log(issue);
+  Issue.updateOrCreate(issue.issueId, issue.bookedBy, issue.progress, issue.due);
+  return res.status(200).send(issue.bookedBy);
+});
+
+// router.post('/issues/:issueId/progress/:status', async function (req, res) {
+//   const issueId = req.params.issueId;
+//   const status = req.params.status;
+//   let issue = await Issue.findById(parseInt(issueId));
+//   if (!issue) return res.status(404).send("Issue doesn't exist");
+//   if (issue.bookedBy) return res.status(404).send('already booked');
+//   issue.progress = status;
+//   Issue.updateOrCreate(issue.issueId, issue, bookedBy, issue.progress, issue.due);
+//   return res.status(200).send('booked');
+// });
+
+router.post('/issues/update/:issueId/:due/:progress', async function (req, res) {
+  console.log('post 2');
+  const issueId = req.params.issueId;
+  const due = req.params.due;
+  const progress = req.params.progress;
+  let issue = await Issue.findById(parseInt(issueId));
+  if (!issue) return res.status(404).send("Issue doesn't exist");
+  Issue.updateOrCreate(issue.issueId, issue.bookedBy, progress, due);
+  return res.status(200).send('booked');
 });
 
 module.exports = router;

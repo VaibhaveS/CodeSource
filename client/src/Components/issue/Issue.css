@@ -1,0 +1,163 @@
+.issue-page-main {
+  display: flex;
+  margin: 1rem;
+  padding: 0.5rem;
+}
+
+.issue-header-main {
+  max-width: 95rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.issue-body-main {
+  padding: 0.5rem;
+  margin: 1rem;
+  background-color: #f7f7f7;
+}
+
+.issue-title-main {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.5;
+  margin-right: 16px;
+}
+
+.issue-number-main {
+  font-size: 18px;
+  color: #586069;
+}
+
+.issue-state-main {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-right: 8px;
+}
+
+.issue-state-open-main {
+  background-color: #28a745;
+}
+
+.issue-state-closed-main {
+  background-color: #cb2431;
+}
+
+.issue-meta-main {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.issue-meta-item-main {
+  font-size: 14px;
+  color: #586069;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.issue-meta-icon-main {
+  margin-right: 8px;
+}
+
+.issue-description-main {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+.issue-comments-main {
+  margin-bottom: 32px;
+}
+
+.issue-comment-main {
+  margin-bottom: 32px;
+  display: flex;
+}
+
+.comment-avatar-main {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 16px;
+}
+
+.comment-avatar-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comment-body-main {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.comment-author-main {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.comment-time-main {
+  font-size: 14px;
+  color: #586069;
+}
+
+.comment-actions-main {
+  margin-left: auto;
+}
+
+.comment-reply-main {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  color: #0366d6;
+  border: 1px solid #0366d6;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.comment-reply-main:hover {
+  background-color: #0366d6;
+  color: #fff;
+}
+
+.issue-button {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  margin: 1rem;
+  font-size: 1rem;
+  color: white;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  background: #000000;
+  border: none;
+}
+
+.issue-button {
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.issue-text {
+  font-size: larger;
+}
+
+.input-issue {
+  margin: 1rem !important;
+  padding: 1rem !important;
+  width: auto !important;
+}

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import DirectoryTree from '../../Components/repositoryComponents/directoryTree/DirectoryTree';
 import RepoNavbar from '../../Components/repositoryComponents/repoNavbar/RepoNavbar';
+import Issues from '../../Components/issues/Issues';
+
+import Issue from '../../Components/issue/Issue';
 import TextEditor from '../../Components/repositoryComponents/textEditor/TextEditor';
 import { useParams } from 'react-router-dom';
 
@@ -26,26 +31,15 @@ const Repository = () => {
   }, [username, repositoryname]);
   return (
     <div>
-      <h1>
-        This is the Repo page {username}/{repositoryname}
-      </h1>
-      <RepoNavbar />
-      <div style={{ display: 'flex' }}>
-        {repository && (
-          <>
-            <div style={{ flex: 1 }}>
-              <TextEditor repo={repository} selected={selected} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <DirectoryTree
-                tree={repository.details.dirTree}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </div>
-          </>
-        )}
-      </div>
+      <RepoNavbar reponame={repositoryname} username={username} />
+      {/* <Issue reponame={repositoryname} username={username} /> */}
+      <Routes>
+        <Route path="/issues/" element={<Issues reponame={repositoryname} username={username} />} />
+        <Route
+          path="/issues/:issueId"
+          element={<Issue reponame={repositoryname} username={username} />}
+        />
+      </Routes>
     </div>
   );
 };
