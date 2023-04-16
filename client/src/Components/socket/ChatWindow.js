@@ -36,7 +36,7 @@ const ChatWindow = ({ selected, user, reponame }) => {
     });
 
     return () => {
-      newSocket.disconnect();
+      if (newSocket.readyState === 1) newSocket.disconnect();
     };
   }, [selected]);
 
