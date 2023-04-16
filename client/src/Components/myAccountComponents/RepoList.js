@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar, FaCodeBranch, FaCircle, FaBook } from 'react-icons/fa';
-import './RepoList.css';
 
 const RepoList = () => {
   const [repositories, setRepositories] = useState(null);
@@ -34,29 +33,28 @@ const RepoList = () => {
   };
 
   return (
-    <div>
+    <div className="myRepo">
       {repositories && (
-        <section id="events-list">
-          <div className="event-container" id="event-container">
+        <section id="repos-list">
+          <div className="repos-container">
             <div className="row">
               {repositories.map((event) => {
                 if (event != null)
                   //TODO: check repositories[0] == null
                   return (
-                    <div className="event-col">
-                      <div className="event-card repo-card" key={event._id}>
-                        <div className="event-header">
+                    <div className="repo-col">
+                      <div className="repo-card" key={event._id}>
+                        <div className="repo-header">
                           <FaBook className="icon" /> &nbsp;
                           <a
                             href={`${process.env.REACT_APP_CLIENT_URL}/${event.owner.login}/${event.name}/repository`}
                             className="repo-anchor"
                           >
-                            {event.full_name}
+                            {event.name}
                           </a>
                         </div>
-
                         <p className="repo-description">{event.description}</p>
-                        <div>
+                        <div className="repo-symbols">
                           {event.topics && (
                             <>
                               <FaCircle style={{ color: randomColor() }} /> {event.topics[0]}{' '}
