@@ -23,35 +23,39 @@
   padding-left: 2%;
 }
 .card-avatar {
-  border-radius: 80%;
-  height: auto;
-  width: 45%;
-  margin-left: auto;
-  margin-right: auto;
+  border-radius: 50%;
+  height: 8rem;
+  margin: auto;
   display: block;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
 }
 .card-jobtitle {
+  letter-spacing: 1px;
+  padding: 0.5rem;
+  margin: 1rem;
   text-align: center;
-  font-weight: 600;
-  font-size: 20px;
 }
 .card-subtitle {
   text-align: center;
 }
 .card-desc {
-  text-align: center;
+  margin: 1rem;
+  margin-top: 0;
+  padding: 0.5rem;
 }
 .card-social {
   margin-left: auto;
   margin-top: 5%;
   margin-right: auto;
   display: block;
-  height: 20%;
-  width: 20%;
+  height: 4rem;
+  width: 4rem;
 }
+
 .myRepo {
   width: 75%;
 }
+
 #repos-list {
   background-color: #ffffff;
   padding: 10px 0;

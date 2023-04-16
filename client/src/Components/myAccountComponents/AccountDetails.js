@@ -6,12 +6,11 @@ const AccountDetails = ({ user }) => {
     <div className="card-profile" data-state="#about">
       <div className="card-header">
         <img className="card-avatar" src={user.details.photos[0].value} alt="avatar" />
-        <h2 className="card-jobtitle">It's about community.</h2>
+        <p className="card-jobtitle">It's about community.</p>
       </div>
       <div className="card-main">
         <div className="card-section" id="about">
           <div className="card-content">
-            <div className="card-subtitle">ABOUT</div>
             <p className="card-desc">{user.details._json.bio}</p>
           </div>
           <div className="card-social">
