@@ -26,6 +26,22 @@ const httpGet = (url, accessToken) => {
   });
 };
 
+router.get('/getNotionData', async function getNotion(req, res) {
+  Key = 'Balaji' + '#' + req.body.repoName;
+  console.log(Key);
+  var result = await Repo.findByfileId(Key, req.body.fileId);
+  console.log(result);
+  return res.status(200).send(result);
+});
+
+router.post('/updateContent', async function (req, res) {
+  Key = 'Balaji' + '#' + req.body.repoName;
+  console.log(req.body.fileId);
+  notionData = {};
+  Repo.insertNotion(req.body.notionList, Key, req.body.fileId);
+  return res.status(200);
+});
+
 async function getAccessToken(userId) {
   try {
     const token = await Token.findById(userId);
