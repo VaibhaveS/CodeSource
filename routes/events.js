@@ -31,7 +31,6 @@ router.post('/event', function (req, res) {
       Event.updateOrCreate(event);
     })
     .then((result) => {
-      console.log('Event updated successfully');
       console.log(result);
       res.statusCode(200).json(result);
     })

@@ -30,7 +30,6 @@ class Event {
       .find()
       .toArray()
       .then((events) => {
-        console.log('returning', events);
         return events;
       })
       .catch((err) => {
@@ -44,7 +43,6 @@ class Event {
   }
 
   static updateOrCreate(event) {
-    console.log(event, 'updating');
     const db = getDb();
     return db
       .collection('events')
