@@ -1,8 +1,5 @@
-import React, { useEffect, useState, Navigate } from 'react';
-import DirectoryTree from '../../Components/repositoryComponents/directoryTree/DirectoryTree';
+import React, { useEffect, useState } from 'react';
 import RepoNavbar from '../../Components/repositoryComponents/repoNavbar/RepoNavbar';
-import TextEditor from '../../Components/repositoryComponents/textEditor/TextEditor';
-import ChatWindow from '../../Components/socket/ChatWindow';
 import Code from '../../Components/repositoryComponents/code/Code';
 import { useParams } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
