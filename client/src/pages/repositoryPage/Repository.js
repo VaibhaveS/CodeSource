@@ -32,8 +32,9 @@ const Repository = () => {
   return (
     <div>
       <RepoNavbar reponame={repositoryname} username={username} />
-      {/* <Issue reponame={repositoryname} username={username} /> */}
       <Routes>
+        ${process.env.REACT_APP_CLIENT_URL}/${event.owner.login}/${event.name}/repository
+        <Route path="/code/" element={<Issues />} />
         <Route path="/issues/" element={<Issues reponame={repositoryname} username={username} />} />
         <Route
           path="/issues/:issueId"
