@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Code.css';
 import DirectoryTree from '../directoryTree/DirectoryTree';
 import TextEditor from '../textEditor/TextEditor';
 import ChatWindow from '../../socket/ChatWindow';
