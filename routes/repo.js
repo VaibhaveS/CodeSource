@@ -2,6 +2,7 @@ const router = require('express').Router();
 const https = require('https');
 const Token = require('../models/token');
 const Repo = require('../models/repo');
+const Notion = require('../models/notion');
 
 const httpGet = (url, accessToken) => {
   const defaultHeaders = {
@@ -27,18 +28,15 @@ const httpGet = (url, accessToken) => {
 };
 
 router.get('/getNotionData', async function getNotion(req, res) {
-  Key = 'Balaji' + '#' + req.body.repoName;
-  console.log(Key);
-  var result = await Repo.findByfileId(Key, req.body.fileId);
-  console.log(result);
+  Key = req.user.username + '#' + req.body.repoName;
+  let result = await Notion.findByfileId(Key, req.body.fileId);
   return res.status(200).send(result);
 });
 
 router.post('/updateContent', async function (req, res) {
-  Key = 'Balaji' + '#' + req.body.repoName;
-  console.log(req.body.fileId);
+  Key = req.user.username + '#' + req.body.repoName;
   notionData = {};
-  Repo.insertNotion(req.body.notionList, Key, req.body.fileId);
+  Notion.insertNotion(req.body.notionList, Key, req.body.fileId);
   return res.status(200);
 });
 
