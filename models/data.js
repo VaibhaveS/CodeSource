@@ -2,21 +2,20 @@ const { getDb } = require('../util/database');
 
 const mongoConnect = require('../util/database').getDb;
 
-class Repo {
-  constructor(userName, repoName, details) {
-    this.name = repoName;
+class Data {
+  constructor(userName, repoName, data) {
     this.key = userName + '#' + repoName;
-    this.details = details;
+    this.data = data;
   }
 
   save() {
     const db = getDb();
     return db
-      .collection('repos')
+      .collection('data')
       .countDocuments()
       .then((count) => {
         this.RepoId = count + 1;
-        return db.collection('repos').insertOne(this);
+        return db.collection('data').insertOne(this);
       })
       .then((result) => {
         console.log(result);
@@ -26,17 +25,14 @@ class Repo {
       });
   }
 
-  static findAll(page, perPage) {
+  static findAll() {
     const db = getDb();
-    const skips = perPage * (page - 1);
     return db
-      .collection('repos')
+      .collection('data')
       .find()
-      .skip(skips)
-      .limit(perPage)
       .toArray()
-      .then((repos) => {
-        return repos;
+      .then((data) => {
+        return data;
       })
       .catch((err) => {
         console.log(err);
@@ -45,8 +41,8 @@ class Repo {
 
   static findByKey(key) {
     const db = getDb();
-    return db.collection('repos').findOne({ key: key });
+    return db.collection('data').findOne({ key: key });
   }
 }
 
-module.exports = Repo;
+module.exports = Data;

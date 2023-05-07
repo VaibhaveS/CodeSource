@@ -2,6 +2,7 @@ const router = require('express').Router();
 const https = require('https');
 const Token = require('../models/token');
 const Repo = require('../models/repo');
+const Data = require('../models/data');
 const Notion = require('../models/notion');
 
 const httpGet = (url, accessToken) => {
@@ -40,6 +41,11 @@ router.post('/updateContent', async function (req, res) {
   return res.status(200);
 });
 
+async function getContent(url, accessToken) {
+  const response = JSON.parse(await httpGet(url, accessToken));
+  return response.content;
+}
+
 async function getAccessToken(userId) {
   try {
     const token = await Token.findById(userId);
@@ -58,7 +64,10 @@ async function parseTree(repoName, sha_url, userName, accessToken) {
   for (let i = 0; i < response.tree.length; i++) {
     const item = response.tree[i];
     if (item.type === 'blob') {
-      files[item.path] = item.sha;
+      files[item.path] = {
+        sha: item.sha,
+        content: await getContent(item.url, accessToken),
+      };
     } else if (item.type === 'tree') {
       const subFiles = await parseTree(repoName, item.sha, userName, accessToken);
       for (const subFile in subFiles) {
@@ -85,6 +94,8 @@ async function getDirectoryTree(req) {
     );
     const url = bodyTwo[0].commit.tree.sha;
     const dirTree = await parseTree(req.body.repoName, url, req.user.details.username, accessToken);
+    const data = new Data(req.user.details.username, req.body.repoName, dirTree);
+    await data.save();
     let dirTreeNested = {};
     for (const filePath in dirTree) {
       const pathArray = filePath.split('/');
@@ -120,8 +131,11 @@ async function getDirectoryTree(req) {
       }
       return id;
     }
-    assignIdsRecursively(dirTreeNested, 0);
-    return [dirTreeNested, body];
+    const root = {};
+    root[req.body.repoName] = dirTreeNested;
+    console.log(root);
+    assignIdsRecursively(root, 0);
+    return [root, body];
   }
 }
 
@@ -147,6 +161,37 @@ router.get('/repos', async function (req, res) {
   const repoDetails = repos.map((repo) => repo.meta);
 
   return res.status(200).send(repoDetails);
+});
+
+function getNameById(node, id, name) {
+  if (node.directoryId === id) {
+    return name;
+  }
+  if (node.files) {
+    for (let file of node.files) {
+      if (file.fileId === id) {
+        return file.filename;
+      }
+    }
+  }
+  for (let key in node) {
+    if (typeof node[key] === 'object' && key !== 'files') {
+      const name = getNameById(node[key], id, key);
+      if (name) {
+        return name;
+      }
+    }
+  }
+  return null;
+}
+
+router.get('/:username/:reponame/name/:id', async function (req, res) {
+  const id = parseInt(req.params.id);
+  const username = req.params.username;
+  const reponame = req.params.reponame;
+  let repo = await Repo.findByKey(`${username}#${reponame}`);
+  const name = getNameById(repo.details.dirTree, id, reponame);
+  return res.status(200).send({ name });
 });
 
 router.get('/:username/:reponame', async function (req, res) {

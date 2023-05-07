@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css?family=DM+Sans:400,500|Jost:400,500,600&display=swap');
+// @import url("href='https://fonts.googleapis.com/css?family=Inter");
+.container-myAccount {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+}
+.card-profile {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+}
+.card-header {
+  width: auto;
+  padding: 2%;
+  margin: 0.5%;
+  height: auto;
+  float: left;
+}
+.card-main {
+  width: auto;
+  display: flex;
+  padding-left: 2%;
+}
+.card-avatar {
+  border-radius: 50%;
+  height: 8rem;
+  margin: auto;
+  display: block;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+}
+.card-jobtitle {
+  letter-spacing: 1px;
+  padding: 0.5rem;
+  margin: 1rem;
+  text-align: center;
+}
+.card-subtitle {
+  text-align: center;
+}
+.card-desc {
+  margin: 1rem;
+  margin-top: 0;
+  padding: 0.5rem;
+}
+.card-social {
+  margin-left: auto;
+  margin-top: 5%;
+  margin-right: auto;
+  display: block;
+  height: 4rem;
+  width: 4rem;
+}
+
+.myRepo {
+  width: 75%;
+}
+
+#repos-list {
+  background-color: #ffffff;
+  padding: 10px 0;
+}
+
+#repos-list h2 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.repo-col {
+  width: calc(100% / 3);
+  padding: 1%;
+}
+
+.repo-card {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  margin-bottom: 30px;
+  height: 100%;
+}
+
+.repo-anchor {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.repo-header {
+  font-size: 16px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.repo-symbols {
+  margin: 5%;
+}

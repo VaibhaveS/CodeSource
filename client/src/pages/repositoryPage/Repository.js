@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DirectoryTree from '../../Components/repositoryComponents/directoryTree/DirectoryTree';
 import RepoNavbar from '../../Components/repositoryComponents/repoNavbar/RepoNavbar';
 import TextEditor from '../../Components/repositoryComponents/textEditor/TextEditor';
+import ChatWindow from '../../Components/socket/ChatWindow';
 import { useParams } from 'react-router-dom';
 
 const Repository = () => {
@@ -46,6 +47,7 @@ const Repository = () => {
           </>
         )}
       </div>
+      <ChatWindow selected={selected || 1} user={username} reponame={repositoryname} />
     </div>
   );
 };
