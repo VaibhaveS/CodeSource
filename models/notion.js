@@ -3,11 +3,6 @@ const { getDb } = require('../util/database');
 const mongoConnect = require('../util/database').getDb;
 
 class Notion {
-  constructor(userName, repoName, details) {
-    this.name = repoName;
-    this.key = userName + '#' + repoName;
-    this.details = details;
-  }
   static async insertNotion(fileDetails, repoKey, fileId) {
     const db = getDb();
     const repoDetails = await db.collection('Notion').findOne({ key: repoKey });
