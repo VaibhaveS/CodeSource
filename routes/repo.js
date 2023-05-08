@@ -4,6 +4,7 @@ const Token = require('../models/token');
 const Repo = require('../models/repo');
 const Data = require('../models/data');
 const Notion = require('../models/notion');
+const Issue = require('../models/issue');
 
 const httpGet = (url, accessToken) => {
   const defaultHeaders = {
@@ -77,6 +78,18 @@ async function parseTree(repoName, sha_url, userName, accessToken) {
   return files;
 }
 
+async function createIssues(req, username, reponame) {
+  const accessToken = await getAccessToken(req.user.userId);
+  const response = JSON.parse(
+    await httpGet('/repos/' + username + '/' + reponame + '/issues', accessToken)
+  );
+  for (let issue of response) {
+    let newIssue = new Issue(issue.id, issue);
+    newIssue.key = username + '#' + reponame;
+    newIssue.save();
+  }
+}
+
 async function getDirectoryTree(req) {
   const accessToken = await getAccessToken(req.user.userId);
   const body = JSON.parse(
@@ -142,6 +155,7 @@ router.post('/directoryTree', async function (req, res) {
   let repo = await Repo.findByKey(req.user.details.username + '#' + req.body.repoName);
   if (!repo) {
     repo = new Repo(req.user.details.username, req.body.repoName);
+    createIssues(req, req.user.details.username, req.body.repoName);
     const response = await getDirectoryTree(req);
     repo.details = {
       dirTree: response[0],
@@ -216,6 +230,13 @@ router.get('/github-repos', async function (req, res) {
     }
   }
   return res.status(200).send(response);
+});
+
+router.get('/:username/:reponame/issues', async function (req, res) {
+  const username = req.params.username;
+  const reponame = req.params.reponame;
+  console.log(username, reponame);
+  return res.status(200).send(await Issue.findByKey(username + '#' + reponame));
 });
 
 module.exports = router;

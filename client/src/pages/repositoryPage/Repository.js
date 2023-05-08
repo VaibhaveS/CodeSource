@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import DirectoryTree from '../../Components/repositoryComponents/directoryTree/DirectoryTree';
 import RepoNavbar from '../../Components/repositoryComponents/repoNavbar/RepoNavbar';
-import TextEditor from '../../Components/repositoryComponents/textEditor/TextEditor';
-import ChatWindow from '../../Components/socket/ChatWindow';
+import Code from '../../Components/repositoryComponents/code/Code';
 import { useParams } from 'react-router-dom';
+import Issue from '../../Components/repositoryComponents/issues/Issue';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const Repository = () => {
   const { username, repositoryname } = useParams();
   const [repository, setRepository] = useState(null);
-  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     const getResponse = async () => {
@@ -27,27 +26,25 @@ const Repository = () => {
   }, [username, repositoryname]);
   return (
     <div>
-      <h1>
-        This is the Repo page {username}/{repositoryname}
-      </h1>
-      <RepoNavbar />
-      <div style={{ display: 'flex' }}>
-        {repository && (
-          <>
-            <div style={{ flex: 1 }}>
-              <TextEditor repo={repository} selected={selected} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <DirectoryTree
-                tree={repository.details.dirTree}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </div>
-          </>
-        )}
-      </div>
-      <ChatWindow selected={selected || 1} user={username} reponame={repositoryname} />
+      <RepoNavbar reponame={repositoryname} username={username} />
+      <Routes>
+        <Route
+          path="/code"
+          element={
+            <Code repositoryname={repositoryname} username={username} repository={repository} />
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <Code repositoryname={repositoryname} username={username} repository={repository} />
+          }
+        />
+        <Route
+          path="/issues"
+          element={<Issue reponame={repositoryname} username={username} repository={repository} />}
+        />
+      </Routes>
     </div>
   );
 };
