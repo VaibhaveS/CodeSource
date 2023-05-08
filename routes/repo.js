@@ -3,6 +3,7 @@ const https = require('https');
 const Token = require('../models/token');
 const Repo = require('../models/repo');
 const Data = require('../models/data');
+const Notion = require('../models/notion');
 const Issue = require('../models/issue');
 
 const httpGet = (url, accessToken) => {
@@ -27,6 +28,18 @@ const httpGet = (url, accessToken) => {
       .on('error', reject);
   });
 };
+
+router.get('/getNotionData', async function getNotion(req, res) {
+  const key = req.body.username + '#' + req.body.repoName;
+  let result = await Notion.findByfileId(key, req.body.fileId);
+  return res.status(200).send(result);
+});
+
+router.post('/updateContent', async function (req, res) {
+  const key = req.body.username + '#' + req.body.repoName;
+  Notion.insertNotion(req.body.notionList, key, req.body.fileId);
+  return res.status(200).send();
+});
 
 async function getContent(url, accessToken) {
   const response = JSON.parse(await httpGet(url, accessToken));
