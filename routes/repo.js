@@ -29,16 +29,15 @@ const httpGet = (url, accessToken) => {
 };
 
 router.get('/getNotionData', async function getNotion(req, res) {
-  Key = req.user.username + '#' + req.body.repoName;
-  let result = await Notion.findByfileId(Key, req.body.fileId);
+  const key = req.body.username + '#' + req.body.repoName;
+  let result = await Notion.findByfileId(key, req.body.fileId);
   return res.status(200).send(result);
 });
 
 router.post('/updateContent', async function (req, res) {
-  Key = req.user.username + '#' + req.body.repoName;
-  notionData = {};
-  Notion.insertNotion(req.body.notionList, Key, req.body.fileId);
-  return res.status(200);
+  const key = req.body.username + '#' + req.body.repoName;
+  Notion.insertNotion(req.body.notionList, key, req.body.fileId);
+  return res.status(200).send();
 });
 
 async function getContent(url, accessToken) {
