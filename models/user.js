@@ -1,7 +1,5 @@
 const { getDb } = require('../util/database');
 
-const mongoConnect = require('../util/database').getDb;
-
 class User {
   constructor(userId, details) {
     this.userId = userId;

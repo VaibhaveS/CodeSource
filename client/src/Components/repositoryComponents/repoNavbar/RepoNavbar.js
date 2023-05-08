@@ -10,19 +10,13 @@ const RepoNavbar = ({ reponame, username }) => {
         <li className="nav-li">
           <FaBook size={20} style={{ verticalAlign: 'middle' }} />
           <h3>
-            <b>VaibhaveS/WhatTODO</b>
+            <b>{username}/{reponame}</b>
           </h3>
         </li>
         <li className="nav-li">
           <Link to={`/${username}/${reponame}/repository/code`}>
             <FaCode size={20} style={{ verticalAlign: 'middle' }} />
             Code
-          </Link>
-        </li>
-        <li className="nav-li">
-          <Link to={`/${username}/${reponame}/repository/pull-requests`}>
-            <FaCodeBranch size={20} style={{ verticalAlign: 'middle' }} />
-            Pull Requests
           </Link>
         </li>
         <li className="nav-li">
@@ -34,7 +28,7 @@ const RepoNavbar = ({ reponame, username }) => {
         <li className="nav-li">
           <Link to={`/${username}/${reponame}/repository/explore`}>
             <FaCompass size={20} style={{ verticalAlign: 'middle' }} />
-            Explore
+            Discuss
           </Link>
         </li>
       </ul>

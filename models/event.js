@@ -1,6 +1,5 @@
 const { getDb } = require('../util/database');
 var ObjectId = require('mongodb').ObjectId;
-const mongoConnect = require('../util/database').getDb;
 
 class Event {
   constructor(title, location, date, description) {
