@@ -39,14 +39,9 @@ function Navbar({ user }) {
             <Link to="/explore">Explore</Link>
           </li>
           {user && (
-            <>
-              <li>
-                <Link to="/myAccount">My account</Link>
-              </li>
-              <li>
-                <Link to="/addRepos">Add repos</Link>
-              </li>
-            </>
+            <li>
+              <Link to="/addRepos">Add repos</Link>
+            </li>
           )}
         </ul>
       </div>
@@ -62,7 +57,10 @@ function Navbar({ user }) {
       )}
       {user && (
         <h2>
-          Hello, {user.details.displayName ? user.details.displayName : user.details.username}
+          Hello,
+          <Link to="/myAccount" className="navUsername">
+            {user.details.displayName ? user.details.displayName : user.details.username}
+          </Link>
         </h2>
       )}
     </nav>

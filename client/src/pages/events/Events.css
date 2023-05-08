@@ -109,7 +109,6 @@
   background: #ffffff
     URL('https://www.cityfurniture.com/media/wysiwyg/landers/store-events/store-events-hero.jpg')
     no-repeat center top scroll;
-  min-height: 25rem;
 }
 
 .cf-hero-message,
@@ -120,7 +119,7 @@
 }
 
 .cf-hero-message {
-  max-width: 900px;
+  max-width: 70rem;
   padding: 2em;
 }
 
