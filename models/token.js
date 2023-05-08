@@ -1,7 +1,5 @@
 const { getDb } = require('../util/database');
 
-const mongoConnect = require('../util/database').getDb;
-
 class Token {
   constructor(userId, accessToken, refreshToken) {
     this.userId = userId;

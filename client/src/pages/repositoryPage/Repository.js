@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import RepoNavbar from '../../Components/repositoryComponents/repoNavbar/RepoNavbar';
 import Code from '../../Components/repositoryComponents/code/Code';
 import { useParams } from 'react-router-dom';
+import Issue from '../../Components/repositoryComponents/issues/Issue';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const Repository = () => {
@@ -38,6 +39,10 @@ const Repository = () => {
           element={
             <Code repositoryname={repositoryname} username={username} repository={repository} />
           }
+        />
+        <Route
+          path="/issues"
+          element={<Issue reponame={repositoryname} username={username} repository={repository} />}
         />
       </Routes>
     </div>
